@@ -1,6 +1,7 @@
 package steps;
 
 import net.serenitybdd.core.pages.PageObject;
+import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import net.thucydides.core.steps.ScenarioSteps;
 import pages.BasePage;
@@ -10,11 +11,16 @@ import pages.BasePage;
  */
 public class BaseScenarioSteps extends ScenarioSteps {
 
-    public BaseScenarioSteps(Pages pages) {
+    BaseScenarioSteps(Pages pages) {
         super(pages);
     }
 
-    public <T extends PageObject> T getCurrentPage(Class<T> pageClass) {
-        return getPages().get(pageClass);
+    <T extends PageObject> T getCurrentPage(Class<T> pageClass) {
+        return getPages().currentPageAt(pageClass);
+    }
+
+    @Step
+    public void goToDashboardPage() {
+        this.getDriver().get(BasePage.BASE_URL);
     }
 }
