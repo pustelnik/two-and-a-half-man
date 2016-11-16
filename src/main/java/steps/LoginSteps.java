@@ -50,4 +50,10 @@ public class LoginSteps extends BaseScenarioSteps {
         assertEquals("Invalid error message", CONF.getString("test.messages.loginPage.invalidCredentials"),
                 loginPage.invalidCredentialsErrorMsg().getText());
     }
+
+    @Step
+    public void shouldLogin() {
+        clickOnLoginButton();
+        enterValidCredentials();
+    }
 }
