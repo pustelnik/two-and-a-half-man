@@ -14,7 +14,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 
 @At("https://examplanner.pgs-soft.com/taahm")
-public class DashboardPage extends BasePage {
+public class DashboardPage extends NavigationBar {
 
     // Navigation bar
     @FindBy(css = "#loginLink")
@@ -45,16 +45,6 @@ public class DashboardPage extends BasePage {
         addSessionBtn().click();
     }
 
-    public void clickOnAddApplicationBtn() {
-        addApplicationBtn().click();
-    }
-
-    public void languageSelection(Language language) {
-        languageDropDown.click();
-        languageDropDown.selectByValue(language.val);
-        Assert.assertThat(languageDropDown.getSelectedVisibleTextValue(), is(language.val));
-    }
-
     private WebElementFacade addSessionBtn() {
         WebElementFacade addSessionBtn = dashboardButtons().get(0);
         shouldBeVisible(addSessionBtn);
@@ -71,5 +61,15 @@ public class DashboardPage extends BasePage {
         List<WebElementFacade> buttons = findAll(By.cssSelector(".btn.btn-light.btn-backofficeTop"));
         assertThat(buttons).isNotEmpty().as("Add session and add application is not found");
         return buttons;
+    }
+
+    public void clickOnAddApplicationBtn() {
+        addApplicationBtn().click();
+    }
+
+    public void languageSelection(Language language) {
+        languageDropDown.click();
+        languageDropDown.selectByValue(language.val);
+        Assert.assertThat(languageDropDown.getSelectedVisibleTextValue(), is(language.val));
     }
 }

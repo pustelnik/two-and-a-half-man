@@ -1,9 +1,11 @@
 package pages;
 
 import com.jayway.awaitility.Duration;
+import gherkin.lexer.Tr;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import org.fest.assertions.Assertions;
+import org.fluentlenium.core.domain.FluentWebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,7 +22,7 @@ import static pages.AddSessionPage.ManagementMethod.PRODUCT;
 /**
  * @author jakubp
  */
-public class AddSessionPage extends BasePage {
+public class AddSessionPage extends NavigationBar {
 
     @FindBy(id = "SessionDto_Location_PostalCode")
     private WebElement postalCode;
@@ -33,7 +35,7 @@ public class AddSessionPage extends BasePage {
     @FindBy(name = "SessionDto.SpaceForSession")
     private WebElementFacade numberOfSeats;
     @FindBy(css = "button[data-id=\"SessionDto_ExaminerId\"]")
-    private WebElementFacade examinerBtn;
+    private WebElement examinerBtn;
     @FindBy(css = ".btn.btn-form.btn-light")
     private WebElement cancelBtn;
     @FindBy(css = ".btn.btn-form.btn-dark")
@@ -78,8 +80,8 @@ public class AddSessionPage extends BasePage {
         }
     }
 
-    public WebElement sessionDateInput() {
-        return find(By.id("SessionDto_Date"));
+    public FluentWebElement sessionDateInput() {
+        return fluent().$("#SessionDto_Date").first();
     }
 
     /**
@@ -88,10 +90,10 @@ public class AddSessionPage extends BasePage {
      */
     public AddSessionPage setSessionDateInput(LocalDateTime dateTime) {
         String sessionDate = dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
-        sessionDateInput().sendKeys(sessionDate);
-//        String actualSessionDate = sessionDateInput().getText();
-//        waitAtMost(Duration.FIVE_SECONDS).until(() -> sessionDateInput().getText().equals(sessionDate));
-//        Assertions.assertThat(actualSessionDate).as("Session date is not " + dateTime).isEqualTo(sessionDate);
+        sessionDateInput().text(sessionDate);
+        String actualSessionDate = sessionDateInput().getValue();
+        waitAtMost(Duration.FIVE_SECONDS).until(() -> sessionDateInput().getValue().equals(sessionDate));
+        Assertions.assertThat(actualSessionDate).as("Session date is not " + dateTime).isEqualTo(sessionDate);
         return this;
     }
 
@@ -115,7 +117,7 @@ public class AddSessionPage extends BasePage {
      */
     public AddSessionPage selectLevel(List<Level> levels) {
         levels.forEach(level -> clickOnDropDown(level.index, 0));
-//        assertThatSelectionNumberMatches(levels, selectLevelBtn().getAttribute("title"));
+        assertThatSelectionNumberMatches(levels, selectLevelBtn().getAttribute("title"));
         return this;
     }
 
@@ -127,7 +129,7 @@ public class AddSessionPage extends BasePage {
      */
     public AddSessionPage selectProduct(List<Product> products) {
         products.forEach(product -> clickOnDropDown(product.index, 1));
-//        assertThatSelectionNumberMatches(products, selectProductBtn().getAttribute("title"));
+        assertThatSelectionNumberMatches(products, selectProductBtn().getAttribute("title"));
         return this;
     }
 
@@ -143,11 +145,20 @@ public class AddSessionPage extends BasePage {
     }
 
     public AddSessionPage selectExaminer(String examiner) {
-        // TODO fix it
-        WebElementFacade examinerSelection = examinerBtn.selectByVisibleText(examiner);
-        shouldBeVisible(examinerSelection);
-        examinerSelection.click();
+        fluent().$(".Session-row li[data-original-index=\"0\"]>a").forEach(element -> {
+            if(element.getText().equals(examiner)) {
+                element.click();
+            }
+        });
         return this;
+    }
+
+    public boolean isCurrentPageAddSessionPage() {
+        return getDriver().getCurrentUrl().endsWith("AddSession");
+    }
+
+    public boolean isCurrentPageSessionDetailsPage() {
+        return getDriver().getCurrentUrl().matches(".*Session/Details/\\d{0,3}");
     }
 
     public WebElementFacade selectLevelBtn() {
@@ -178,7 +189,7 @@ public class AddSessionPage extends BasePage {
         return numberOfSeats;
     }
 
-    public WebElementFacade getExaminerBtn() {
+    public WebElement getExaminerBtn() {
         return examinerBtn;
     }
 
@@ -198,7 +209,7 @@ public class AddSessionPage extends BasePage {
     }
 
     private void assertThatSelectionNumberMatches(List levels, String levelsTitle) {
-        assertThat(levelsTitle).as(format("%s is not %s", levelsTitle, levels.size())).matches(".*\\w?"+levels.size()+1);
+        assertThat(levelsTitle).as(format("%s is not %s", levelsTitle, levels.size())).matches(".*\\w?"+levels.size());
     }
 
     private void clickOnDropDown(int index, int elementNumber) {

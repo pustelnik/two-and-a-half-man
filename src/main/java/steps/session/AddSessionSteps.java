@@ -6,6 +6,8 @@ import pages.AddSessionPage;
 import pages.DashboardPage;
 import steps.BaseScenarioSteps;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 /**
  * @author jakubp on 16.11.16.
  */
@@ -20,20 +22,66 @@ public class AddSessionSteps extends BaseScenarioSteps {
     }
 
     @Step
+    public void shouldFillNewSessionForm() {
+        shouldSetLocationData();
+        addSessionPage.getAdditionalData().sendKeys(session.getAdditionalInfo());
+        shouldSelectSeatsManagement();
+        shouldSelectLevels();
+        shouldSelectProducts();
+        shouldSelectExaminer();
+
+    }
+
+    @Step
+    public void clickOnSaveSessionButton() {
+        addSessionPage.getSaveSessionBtn().click();
+    }
+
+    @Step
+    public void clickOnCancelButton() {
+        addSessionPage.getCancelBtn().click();
+    }
+
+    @Step
+    public void shouldNotCreateNewSession() {
+        assertThat(addSessionPage.isCurrentPageAddSessionPage()).as("Session has been created").isTrue();
+    }
+
+    @Step
     public void shouldCreateNewSession() {
+        assertThat(addSessionPage.isCurrentPageSessionDetailsPage()).as("Session has not been created").isTrue();
+    }
+
+    @Step
+    public void shouldSelectExaminer() {
+        addSessionPage.getExaminerBtn().click();
+        addSessionPage.selectExaminer(session.getExaminer());
+    }
+
+    @Step
+    public void shouldSelectSeatsManagement() {
+        addSessionPage.selectSeatManagementMethod(session.getManagementMethod());
+        addSessionPage.getNumberOfSeats().sendKeys(session.getNumberOfSeats());
+    }
+
+    @Step
+    private void shouldSelectLevels() {
+        addSessionPage.selectLevelBtn().click();
+        addSessionPage.selectLevel(session.getLevels());
+    }
+
+    @Step
+    private void shouldSelectProducts() {
+        addSessionPage.selectProductBtn().click();
+        addSessionPage.selectProduct(session.getProducts());
+    }
+
+    @Step
+    public void shouldSetLocationData() {
         addSessionPage.setSessionDateInput(session.getSessionDate());
         addSessionPage.getPostalCode().sendKeys(session.getPostalCode());
         addSessionPage.getCity().sendKeys(session.getCity());
         addSessionPage.getAddress().sendKeys(session.getAddress());
-        addSessionPage.getAdditionalData().sendKeys(session.getAdditionalInfo());
-        addSessionPage.selectSeatManagementMethod(session.getManagementMethod());
-        addSessionPage.getNumberOfSeats().sendKeys(session.getNumberOfSeats());
-        addSessionPage.selectLevelBtn().click();
-        addSessionPage.selectLevel(session.getLevels());
-        addSessionPage.selectProductBtn().click();
-        addSessionPage.selectProduct(session.getProducts());
-        addSessionPage.getExaminerBtn().click();
-        addSessionPage.selectExaminer(session.getExaminer());
     }
 
     @Step

@@ -4,6 +4,7 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.ManagedPages;
 import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.Title;
 import net.thucydides.core.pages.Pages;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +37,20 @@ public class CreateSession {
     }
 
     @Test
+    @Title("Session should be created - Valid Data")
     public void shouldCreateSession() {
         addSessionSteps.shouldOpenCreateNewSessionPage();
+        addSessionSteps.shouldFillNewSessionForm();
+        addSessionSteps.clickOnSaveSessionButton();
         addSessionSteps.shouldCreateNewSession();
+    }
+
+    @Test
+    @Title("Session should not be created - Valid Data, Cancel button")
+    public void whenCanceledSessionShouldNotBeCreated() {
+        addSessionSteps.shouldOpenCreateNewSessionPage();
+        addSessionSteps.shouldFillNewSessionForm();
+        addSessionSteps.clickOnCancelButton();
+        addSessionSteps.shouldNotCreateNewSession();
     }
 }
