@@ -13,7 +13,7 @@ import static pages.AddSessionPage.Product.BASIC_ISTQB;
 /**
  * @author jakubp on 16.11.16.
  */
-class SessionBuilder {
+public class SessionBuilder {
 
     private final Session session;
 

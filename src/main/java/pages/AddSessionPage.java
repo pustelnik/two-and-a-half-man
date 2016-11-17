@@ -78,7 +78,7 @@ public class AddSessionPage extends BasePage {
         }
     }
 
-    private WebElement sessionDateInput() {
+    public WebElement sessionDateInput() {
         return find(By.id("SessionDto_Date"));
     }
 

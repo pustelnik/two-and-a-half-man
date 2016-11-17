@@ -15,7 +15,7 @@ public class BaseScenarioSteps extends ScenarioSteps {
         super(pages);
     }
 
-    protected <T extends PageObject> T getCurrentPage(Class<T> pageClass) {
+    public <T extends PageObject> T getCurrentPage(Class<T> pageClass) {
         return getPages().currentPageAt(pageClass);
     }
 

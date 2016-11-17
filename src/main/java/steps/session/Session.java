@@ -22,7 +22,7 @@ public class Session {
     private List<Product> products;
     private String examiner;
 
-    Session(
+    public Session(
             LocalDateTime sessionDate,
             String postalCode,
             String city,
