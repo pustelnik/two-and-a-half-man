@@ -11,11 +11,11 @@ import pages.BasePage;
  */
 public class BaseScenarioSteps extends ScenarioSteps {
 
-    BaseScenarioSteps(Pages pages) {
+    public BaseScenarioSteps(Pages pages) {
         super(pages);
     }
 
-    <T extends PageObject> T getCurrentPage(Class<T> pageClass) {
+    protected <T extends PageObject> T getCurrentPage(Class<T> pageClass) {
         return getPages().currentPageAt(pageClass);
     }
 
