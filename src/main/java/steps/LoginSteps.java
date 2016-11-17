@@ -31,21 +31,25 @@ public class LoginSteps extends BaseScenarioSteps {
     }
 
     @Step
-    public void enterValidCredentials() {
+    public boolean login(String user,String password){
         loginPage.
-                enterCredentials(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val)).
-                pressLoginBtn();
+                enterCredentials(user,password).pressLoginBtn();
+        return loginPage.invalidCredentialsErrorMsg().isVisible() &&
+                !CONF.getString("test.messages.loginPage.invalidCredentials").equals(loginPage.invalidCredentialsErrorMsg().getText());
+    }
+
+    @Step
+    public void enterValidCredentials() {
+        login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val));
     }
 
     @Step
     public void enterInvalidCredentials() {
-        loginPage.
-                enterCredentials("invalid_email@test.pl", "invalid_password").
-                pressLoginBtn();
+        login("invalid_email@test.pl", "invalid_password");
     }
 
     @Step
-    public void errorMessageShouldBeDisplayed() {
+    public void verifyLoginStatus() {
         assertTrue("Error msg is not visible", loginPage.invalidCredentialsErrorMsg().isVisible());
         assertEquals("Invalid error message", CONF.getString("test.messages.loginPage.invalidCredentials"),
                 loginPage.invalidCredentialsErrorMsg().getText());
