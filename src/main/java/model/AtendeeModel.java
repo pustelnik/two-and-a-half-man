@@ -1,11 +1,13 @@
 package model;
 
+import static model.EnrollEnums.*;
+
 /**
  * Created by LewarskiT on 2016-11-17.
  */
 public class AtendeeModel {
-    private int prefferedLanguage = 1;
-    private int prefferedEgzamType = 1;
+    private PREFFERED_LANGUAGE prefferedLanguage = PREFFERED_LANGUAGE.POLISH;
+    private PREFFERED_EGZAM_TYPE prefferedEgzamType = PREFFERED_EGZAM_TYPE.PAPER;
 
     private String firstName;
     private String lastName;
@@ -19,9 +21,9 @@ public class AtendeeModel {
     private String address;
     private String additionalDetails;
 
-    private int invoice=1;
+    private INVOICE_TYPE invoice= INVOICE_TYPE.NONE;
 
-    private boolean acceptLegalPolicy;
+    private boolean acceptLegalPolicy = true;
     private boolean acceptMarketingPolicy;
 
 }

@@ -1,5 +1,6 @@
 package steps;
 
+import model.EnrollEnums;
 import net.thucydides.core.pages.Pages;
 import pages.EgzamEnrollPage;
 
@@ -12,4 +13,9 @@ public class EgzamEnrollSteps extends BaseScenarioSteps {
     public EgzamEnrollSteps(Pages pages) {
         super(pages);
     }
+
+    public void selectLanguage(){
+        egzamEnrollPage.selelectLanguage(EnrollEnums.PREFFERED_LANGUAGE.POLISH);
+    }
+
 }

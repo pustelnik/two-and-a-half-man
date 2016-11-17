@@ -3,12 +3,14 @@ package pages;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.At;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
  * @author jakubp on 11.11.16.
  */
+@At(urls={"#HOST/taahm/Account/Login"})
 public class LoginPage extends BasePage {
 
     @FindBy(css = "#Email")
