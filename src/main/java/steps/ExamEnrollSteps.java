@@ -12,17 +12,23 @@ import static org.fest.assertions.Assertions.assertThat;
  * Created by LewarskiT on 2016-11-17.
  */
 public class ExamEnrollSteps extends BaseScenarioSteps {
-    private final LandingPage landingPage = getCurrentPage((LandingPage.class));
-
     private AtendeeModel atendeeModel;
 
     public ExamEnrollSteps(Pages pages) {
-        super(pages);
-        atendeeModel = new AtendeeModel(ConfigFactory.load().getConfig("test.attendee"));
+        super(pages);        
+    }
+    
+    public void setAtendeeModel(String modelName){
+        atendeeModel = new AtendeeModel(ConfigFactory.load().getConfig(modelName));
+    }
+    
+    public void clearAtendeeModel(){
+        atendeeModel = null;
     }
 
     @Step
     public void goToIndividualEnrollpage(String individualSessionId){
+        LandingPage landingPage = getCurrentPage((LandingPage.class));
         landingPage.goToLandingPage();
         landingPage.getIndividualRegisterButtonById(individualSessionId).click();
     }

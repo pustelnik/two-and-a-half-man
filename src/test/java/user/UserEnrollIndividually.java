@@ -23,7 +23,6 @@ import static utils.Environment.TEST_USR;
  */
 @RunWith(SerenityRunner.class)
 public class UserEnrollIndividually {
-    private static final Config CONF = ConfigFactory.load();
     @Managed
     public WebDriver driver;
 
@@ -53,31 +52,35 @@ public class UserEnrollIndividually {
     @Test
     @Title("Try to enroll on an egzam session while not being logged in")
     public void enrollAsUnregisteredUser(){
+        examEnrollSteps.setAtendeeModel("test.atendee1");
         examEnrollSteps.goToIndividualEnrollpage("464");
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2();
         examEnrollSteps.fillFieldsFromStep3();
         examEnrollSteps.confirmEnrollment();
-
         //also -> go to enrollment details and verify that data is correct
     }
 
     @Test
     @Title("Try to enroll on an egzam session while being logged in")
     public void enrollAsSelfWhenRegistered(){
-        LoginRequest loginRequest = new LoginRequest();
-        assertThat(loginRequest.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val))).describedAs("Login status").isTrue();
-        examEnrollSteps.feedCookiesToTheDriver(driver,loginRequest.getCookies());
+        examEnrollSteps.loginUsingRequest(driver);
 
-        enrollAsUnregisteredUser();
+        examEnrollSteps.setAtendeeModel("test.atendee2");
+        examEnrollSteps.goToIndividualEnrollpage("464");
+        examEnrollSteps.fillFieldsFromStep1();
+        examEnrollSteps.fillFieldsFromStep2();
+        examEnrollSteps.fillFieldsFromStep3();
+        examEnrollSteps.confirmEnrollment();
     }
 
     @Test
     @Title("Try to enroll same user twice")
-    @Pending
     public void enrollSameUserTwice(){
-
-
+        enrollAsUnregisteredUser();
+        //start adding user for the second time
+        examEnrollSteps.fillFieldsFromStep1();
+        examEnrollSteps.fillFieldsFromStep2();
     }
 
     @Test
@@ -115,5 +118,6 @@ public class UserEnrollIndividually {
     public void removeEgzamSession(){
         //delete egzam session
         //do it once for whole TS
+        examEnrollSteps.clearAtendeeModel();
     }
 }
