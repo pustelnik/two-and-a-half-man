@@ -173,7 +173,7 @@ public class AddSessionPage extends NavigationBar {
         return saveSessionBtn;
     }
 
-    private WebElementFacade seatManagementMethod(ManagementMethod method) {
+    public WebElementFacade seatManagementMethod(ManagementMethod method) {
         if(method.equals(PRODUCT)) {
             return find(By.id("spacePerProduct"));
         }
