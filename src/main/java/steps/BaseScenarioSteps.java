@@ -31,11 +31,11 @@ public class BaseScenarioSteps extends ScenarioSteps {
 
     @Step
     public void goToDashboardPage() {
-        this.getDriver().get(BasePage.BASE_URL);
+        this.getDriver().get(BasePage.BASE_URL+"/taahm");
     }
     @Step
     public void goToLandingPage() {
-        this.getDriver().get(BasePage.BASE_URL);
+        this.getDriver().get(BasePage.BASE_URL+"/taahm");
     }
 
     @Step
@@ -43,6 +43,7 @@ public class BaseScenarioSteps extends ScenarioSteps {
         LoginRequest loginRequest = new LoginRequest();
         assertThat(loginRequest.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val))).describedAs("Login status").isTrue();
         feedCookiesToTheDriver(driver,loginRequest.getCookies());
+        goToDashboardPage();
     }
     
     @Step

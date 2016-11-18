@@ -9,7 +9,7 @@ import org.openqa.selenium.support.FindBy;
  *
  * Created by LewarskiT on 2016-11-18.
  */
-@At(urls="#HOST/taahm/RegisterProduct/Complete")
+//@At(urls="#HOST/taahm/RegisterProduct/Complete")
 public class ExamEnrollPageConfirmation extends ExamEnrollPageBase{
 
     public ExamEnrollPageConfirmation(WebDriver driver) {

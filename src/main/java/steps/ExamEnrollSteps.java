@@ -13,6 +13,13 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class ExamEnrollSteps extends BaseScenarioSteps {
     private AtendeeModel atendeeModel;
+    
+    private LandingPage landingPage = getCurrentPage(LandingPage.class);
+    private final ExamEnrollPageBase examEnrollPageBase = getCurrentPage(ExamEnrollPageBase.class);
+    private ExamEnrollPageStep1 examEnrollPageStep1 = getCurrentPage(ExamEnrollPageStep1.class);
+    private ExamEnrollPageStep2 examEnrollPageStep2 = getCurrentPage(ExamEnrollPageStep2.class);
+    private ExamEnrollPageStep3 examEnrollPageStep3 = getCurrentPage(ExamEnrollPageStep3.class);
+    private ExamEnrollPageConfirmation examEnrollPageConfirmation = getCurrentPage(ExamEnrollPageConfirmation.class);
 
     public ExamEnrollSteps(Pages pages) {
         super(pages);        
@@ -35,7 +42,39 @@ public class ExamEnrollSteps extends BaseScenarioSteps {
 
     @Step
     public void fillFieldsFromStep1(){
-        ExamEnrollPageStep1 examEnrollPageStep1 = getCurrentPage(ExamEnrollPageStep1.class);
+        fillEnrollPageStep1();
+
+        assertThat(examEnrollPageStep1.checkIfValidationWasTriggered()).describedAs("One of the fields was not set!").isFalse();
+    }
+
+    @Step
+    public void fillFieldsFromStep2(){
+        fillEnrollPageStep2();
+        assertThat(examEnrollPageStep2.checkIfValidationWasTriggered()).describedAs("One of the fields was not set!").isFalse();
+    }
+    
+    @Step
+    public void fillFieldsFromStep2AndCheckForDuplicateEmailMessage(){
+        fillEnrollPageStep2();
+        assertThat(examEnrollPageStep2.checkIfValidationWasTriggered()).describedAs("Validation was not triggered").isTrue();
+        assertThat(examEnrollPageStep2.getEmailValidationMessage()).describedAs("Duplicate email message is wrong").
+                isEqualTo(ConfigFactory.load().getConfig("test.messages.enrollPage").getString("emailDuplicated"));
+    }
+
+    @Step
+    public void fillFieldsFromStep3(){
+        fillEnrollPageStep3();
+        assertThat(examEnrollPageStep3.checkIfValidationWasTriggered()).describedAs("One of the fields was not set!").isFalse();
+    }
+
+    @Step
+    public void confirmEnrollment(){
+        assertThat(examEnrollPageConfirmation.isConfirmationVisible()).describedAs("Confirmation is not visible").isTrue();
+        assertThat(examEnrollPageConfirmation.getConfirmationMessage()).describedAs("Confirmation message is wrong").
+                isEqualTo(ConfigFactory.load().getConfig("test.messages.enrollPage").getString("enrollConfirmation"));
+    }
+    
+    private void fillEnrollPageStep1(){
         examEnrollPageStep1.reload();
         examEnrollPageStep1.selelectLanguage(atendeeModel.getPrefferedLanguage());
         examEnrollPageStep1.selelectExamType(atendeeModel.getPrefferedExamType());
@@ -46,13 +85,9 @@ public class ExamEnrollSteps extends BaseScenarioSteps {
             examEnrollPageStep1.setOwnedCertificateIssuedBy(atendeeModel.getOwnedCertificateIssuedBy());
         }
         examEnrollPageStep1.goToStep2();
-
-        assertThat(examEnrollPageStep1.checkIfValidationWasTriggered()).describedAs("One of the fields was not set!").isFalse();
     }
-
-    @Step
-    public void fillFieldsFromStep2(){
-        ExamEnrollPageStep2 examEnrollPageStep2 = getCurrentPage(ExamEnrollPageStep2.class);
+    
+    private void fillEnrollPageStep2(){
         examEnrollPageStep2.reload();
         examEnrollPageStep2.setFirstName(atendeeModel.getFirstName());
         examEnrollPageStep2.setLastName(atendeeModel.getLastName());
@@ -60,12 +95,9 @@ public class ExamEnrollSteps extends BaseScenarioSteps {
         examEnrollPageStep2.setPhone(atendeeModel.getPhoneNumber());
 
         examEnrollPageStep2.goToStep3();
-        assertThat(examEnrollPageStep2.checkIfValidationWasTriggered()).describedAs("One of the fields was not set!").isFalse();
     }
-
-    @Step
-    public void fillFieldsFromStep3(){
-        ExamEnrollPageStep3 examEnrollPageStep3 = getCurrentPage(ExamEnrollPageStep3.class);
+    
+    private void fillEnrollPageStep3(){
         examEnrollPageStep3.reload();
         examEnrollPageStep3.setCertificateLastName(atendeeModel.getCertificateLastName());
         examEnrollPageStep3.setCertificateFirstName(atendeeModel.getCertificateFirstName());
@@ -78,14 +110,5 @@ public class ExamEnrollSteps extends BaseScenarioSteps {
         examEnrollPageStep3.setMarketingPolicy(atendeeModel.isAcceptMarketingPolicy());
 
         examEnrollPageStep3.finishRegistration();
-        assertThat(examEnrollPageStep3.checkIfValidationWasTriggered()).describedAs("One of the fields was not set!").isFalse();
-    }
-
-    @Step
-    public void confirmEnrollment(){
-        ExamEnrollPageConfirmation examEnrollPageConfirmation = getCurrentPage(ExamEnrollPageConfirmation.class);
-        assertThat(examEnrollPageConfirmation.isConfirmationVisible()).describedAs("Confirmation is not visible").isTrue();
-        assertThat(examEnrollPageConfirmation.getConfirmationMessage()).describedAs("Confirmation message is wrong").
-                isEqualTo(ConfigFactory.load().getConfig("test.messages.enrollPage").getString("enrollConfirmation"));
     }
 }

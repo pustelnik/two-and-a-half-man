@@ -80,7 +80,7 @@ public class UserEnrollIndividually {
         enrollAsUnregisteredUser();
         //start adding user for the second time
         examEnrollSteps.fillFieldsFromStep1();
-        examEnrollSteps.fillFieldsFromStep2();
+        examEnrollSteps.fillFieldsFromStep2AndCheckForDuplicateEmailMessage();
     }
 
     @Test

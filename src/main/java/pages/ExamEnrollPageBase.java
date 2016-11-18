@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Created by LewarskiT on 2016-11-18.
  */
-@At(urls={"#HOST/taahm/RegisterProduct/GetAttendee"})
+//@At(urls={"#HOST/taahm/RegisterProduct/GetAttendee"})
 public class ExamEnrollPageBase extends BasePage {
     private final String URL = "/taahm/RegisterProduct/GetAttendee";
 
