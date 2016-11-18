@@ -1,12 +1,12 @@
 package steps.session;
 
-import pages.AddSessionPage.Level;
+import model.EnrollEnums;
 import pages.AddSessionPage.ManagementMethod;
-import pages.AddSessionPage.Product;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import model.EnrollEnums.EGZAM_LEVEL;
+import model.EnrollEnums.EGZAM_PRODUCT;
 /**
  * @author jakubp on 16.11.16.
  */
@@ -18,8 +18,8 @@ public class Session {
     private String additionalInfo;
     private ManagementMethod managementMethod;
     private String numberOfSeats;
-    private List<Level> levels;
-    private List<Product> products;
+    private List<EnrollEnums.EGZAM_LEVEL> levels;
+    private List<EnrollEnums.EGZAM_PRODUCT> products;
     private String examiner;
 
     public Session(
@@ -30,8 +30,8 @@ public class Session {
             String additionalInfo,
             ManagementMethod managementMethod,
             String numberOfSeats,
-            List<Level> levels,
-            List<Product> products,
+            List<EGZAM_LEVEL> levels,
+            List<EGZAM_PRODUCT> products,
             String examiner) {
         this.sessionDate = sessionDate;
         this.postalCode = postalCode;
@@ -73,11 +73,11 @@ public class Session {
         return numberOfSeats;
     }
 
-    public List<Level> getLevels() {
+    public List<EGZAM_LEVEL> getLevels() {
         return levels;
     }
 
-    public List<Product> getProducts() {
+    public List<EGZAM_PRODUCT> getProducts() {
         return products;
     }
 
@@ -113,11 +113,11 @@ public class Session {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public void setLevels(List<Level> levels) {
+    public void setLevels(List<EGZAM_LEVEL> levels) {
         this.levels = levels;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<EGZAM_PRODUCT> products) {
         this.products = products;
     }
 

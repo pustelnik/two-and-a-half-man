@@ -55,6 +55,12 @@
             <artifactId>config</artifactId>
             <version>1.3.1</version>
         </dependency>
+        <!--REQUEST HANDLER-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5</version>
+        </dependency>
     </dependencies>
 
     <build>

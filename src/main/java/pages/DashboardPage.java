@@ -22,7 +22,7 @@ public class DashboardPage extends NavigationBar {
     @FindBy(css = "dropdownMenu-language")
     private WebElementFacade languageDropDown;
 
-    public enum Language {
+    private enum Language {
         POLISH("Polski"),
         ENGLISH("English");
 

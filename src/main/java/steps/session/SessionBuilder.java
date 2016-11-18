@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static pages.AddSessionPage.Level.*;
-import static pages.AddSessionPage.Level.EXPERT;
-import static pages.AddSessionPage.Product.BASIC_ISTQB;
+import static model.EnrollEnums.EGZAM_PRODUCT.BASIC_ISTQB;
+
+import static model.EnrollEnums.EGZAM_LEVEL.BASIC;
+import static model.EnrollEnums.EGZAM_LEVEL.EXPERT;
 
 /**
  * @author jakubp on 16.11.16.
