@@ -33,7 +33,7 @@ public class LoginTest {
     @Test
     public void shouldNotLogin() {
         steps.enterInvalidCredentials();
-        steps.errorMessageShouldBeDisplayed();
+        steps.verifyLoginStatus();
     }
 
     @Test

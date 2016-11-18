@@ -3,18 +3,20 @@ package pages;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.At;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import steps.session.Session;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+import static model.EnrollEnums.EGZAM_LEVEL;
+import static model.EnrollEnums.EGZAM_PRODUCT;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 
@@ -65,7 +67,7 @@ public class LandingPage extends BasePage {
 
 
 
-    public boolean isIndividualRegistrationAvailable(Session session, AddSessionPage.Product product, AddSessionPage.Level level){
+    public boolean isIndividualRegistrationAvailable(Session session, EGZAM_PRODUCT product, EGZAM_LEVEL level){
         return false;
     }
 
