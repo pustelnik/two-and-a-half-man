@@ -2,7 +2,6 @@ package pages;
 
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
-import net.thucydides.core.annotations.At;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,8 +23,9 @@ import static org.junit.Assert.assertNotNull;
  * Created by OtrembskiA on 2016-11-16.
  */
 
-@At("https://examplanner.pgs-soft.com/taahm")
-public class LandingPage extends BasePage {
+//@At(urls={"#HOST/taahm"})
+public class LandingPage extends BasePage{
+    private final String URL = "/taahm";
 
     @FindBy(css = ".text-center.row.Agenda-container.u-resetMargin")
     private WebElement agendaContainer;
@@ -49,6 +49,10 @@ public class LandingPage extends BasePage {
 
     public LandingPage(WebDriver driver) {
         super(driver);
+    }
+
+    public void goToLandingPage(){
+        fluent().goTo(BASE_URL + URL);
     }
 
     public void clickOnLoginLink() {
@@ -104,7 +108,7 @@ public class LandingPage extends BasePage {
 
 
 
-    private WebElement getIndividualRegisterButtonById(String examId){
+    public WebElement getIndividualRegisterButtonById(String examId){
         return  getDriver().findElement(By.cssSelector("td[data-productsessionid='"+examId+"']"));
     }
 

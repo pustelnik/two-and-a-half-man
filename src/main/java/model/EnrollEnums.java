@@ -5,11 +5,19 @@ package model;
  */
 public class EnrollEnums {
     public enum PREFFERED_LANGUAGE {
-        ENGLISH(25), POLISH(26);
+        POLISH(25), ENGLISH(26);
         final int index;
 
         PREFFERED_LANGUAGE(int index) {
             this.index = index;
+        }
+        static PREFFERED_LANGUAGE getValue(int value) {
+            for(PREFFERED_LANGUAGE e: PREFFERED_LANGUAGE.values()) {
+                if(e.index == value) {
+                    return e;
+                }
+            }
+            return null;
         }
     }
 
@@ -20,6 +28,14 @@ public class EnrollEnums {
         PREFFERED_EGZAM_TYPE(String type) {
             this.type = type;
         }
+        static PREFFERED_EGZAM_TYPE getValue(String value) {
+            for(PREFFERED_EGZAM_TYPE e: PREFFERED_EGZAM_TYPE.values()) {
+                if(e.type.equals(value)) {
+                    return e;
+                }
+            }
+            return null;
+        }
     }
 
     public enum INVOICE_TYPE {
@@ -28,6 +44,14 @@ public class EnrollEnums {
 
         INVOICE_TYPE(String type) {
             this.type = type;
+        }
+        static INVOICE_TYPE getValue(String value) {
+            for(INVOICE_TYPE e: INVOICE_TYPE.values()) {
+                if(e.type.equals(value)) {
+                    return e;
+                }
+            }
+            return null;
         }
     }
 

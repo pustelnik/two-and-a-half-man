@@ -11,10 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import steps.BaseScenarioSteps;
-import steps.EgzamEnrollSteps;
-import tools.EnrollRequest;
+import steps.ExamEnrollSteps;
 import tools.LoginRequest;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static utils.Environment.TEST_PWD;
 import static utils.Environment.TEST_USR;
 
@@ -34,48 +34,48 @@ public class UserEnrollIndividually {
     BaseScenarioSteps baseScenarioSteps;
 
     @Steps
-    EgzamEnrollSteps egzamEnrollSteps;
+    ExamEnrollSteps examEnrollSteps;
 
-
+//todo
+    //-remove user enrollment after test
+    //add test to check if user can not enroll twice
     @Before
     public void prepareEgzamSession(){
         //create new session
         //do it once for whole TS
-        LoginRequest loginRequest = new LoginRequest();
-        if(loginRequest.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val))){
-            EnrollRequest enrollRequest = new EnrollRequest(loginRequest.getCookieStore());
-            enrollRequest.setEgzamSessionId(464);
-            egzamEnrollSteps.feedCookiesToTheDriver(driver,enrollRequest.getCookies());
-        }
+        /*LoginRequest loginRequest = new LoginRequest();
+        assertThat(loginRequest.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val))).describedAs("Login status").isTrue();
+        examEnrollSteps.feedCookiesToTheDriver(driver,loginRequest.getCookies());*/
+
+        //todo create a session and logout afer
     }
 
     @Test
     @Title("Try to enroll on an egzam session while not being logged in")
     public void enrollAsUnregisteredUser(){
-        /*org.openqa.selenium.Cookie name = new org.openqa.selenium.Cookie("mycookie", "123456789123");
-        driver.manage().addCookie(name);
-        for(org.openqa.selenium.Cookie cookie : driver.manage().getCookies()){
-            System.out.println(cookie.getName() + " " + cookie.getValue());
-        }*/
-        //egzamEnrollSteps.selectLanguage();
+        examEnrollSteps.goToIndividualEnrollpage("464");
+        examEnrollSteps.fillFieldsFromStep1();
+        examEnrollSteps.fillFieldsFromStep2();
+        examEnrollSteps.fillFieldsFromStep3();
+        examEnrollSteps.confirmEnrollment();
+
+        //also -> go to enrollment details and verify that data is correct
     }
-/*
+
     @Test
     @Title("Try to enroll on an egzam session while being logged in")
-    @Pending
     public void enrollAsSelfWhenRegistered(){
-        loginSteps.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val));
-        loginSteps.verifyLoginStatus();
+        LoginRequest loginRequest = new LoginRequest();
+        assertThat(loginRequest.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val))).describedAs("Login status").isTrue();
+        examEnrollSteps.feedCookiesToTheDriver(driver,loginRequest.getCookies());
 
-
+        enrollAsUnregisteredUser();
     }
 
     @Test
     @Title("Try to enroll same user twice")
     @Pending
     public void enrollSameUserTwice(){
-        loginSteps.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val));
-        loginSteps.verifyLoginStatus();
 
 
     }
@@ -92,7 +92,7 @@ public class UserEnrollIndividually {
     @Pending
     public void tryToEnrollWhenThereIsNoMoreSeats(){
 
-    }*/
+    }
 
     @Test
     @Title("Check if free seat counter is working correctly - Precondition create session with X free seats")
@@ -104,14 +104,12 @@ public class UserEnrollIndividually {
         //finally verify that the counter shows 0 free seats
     }
 
-    /*@Test
+    @Test
     @Title("Try to enroll on an egzam session while not being logged in")
     @Pending
     public void enrollAsSomeoneWhenRegistered(){
-        loginSteps.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val));
-        loginSteps.verifyLoginStatus();
 
-    }*/
+    }
 
     @After
     public void removeEgzamSession(){

@@ -1,47 +1,47 @@
 package pages;
 
 import model.EnrollEnums;
-import net.serenitybdd.core.annotations.findby.FindBy;
-import org.fluentlenium.core.domain.FluentWebElement;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * Created by LewarskiT on 2016-11-17.
  */
-public class EgzamEnrollPageStep1 extends EgzamEnrollPageBase {
+public class ExamEnrollPageStep1 extends ExamEnrollPageBase {
     ///STEP 1
-    @FindBy(css = "#ProductSelectionDto_ProductLanguage25")
-    private FluentWebElement polishLanguage;
-    @FindBy(css = "#ProductSelectionDto_ProductLanguage26")
-    private FluentWebElement englishLanguage;
+    @FindBy(xpath = "//div[@class='radio']/input[@id='ProductSelectionDto_ProductLanguage25']")
+    private WebElement polishLanguage;
+    @FindBy(xpath = "//div[@class='radio']/input[@id='ProductSelectionDto_ProductLanguage26']")
+    private WebElement englishLanguage;
     @FindBy(css = "span[for='ProductSelectionDto.ProductLanguage']")
-    private FluentWebElement languageValidateion;
+    private WebElement languageValidateion;
 
-    @FindBy(css = "#ProductSelectionDto_ProductForm_papierowa")
-    private FluentWebElement egzamTypePaper;
-    @FindBy(css = "#ProductSelectionDto_ProductForm_elektroniczna")
-    private FluentWebElement egzamTypeElectronic;
+    @FindBy(xpath = "//div[@class='radio']/input[@id='ProductSelectionDto_ProductForm_papierowa']")
+    private WebElement egzamTypePaper;
+    @FindBy(xpath = "//div[@class='radio']/input[@id='ProductSelectionDto_ProductForm_elektroniczna']")
+    private WebElement egzamTypeElectronic;
     @FindBy(css = "span[for='ProductSelectionDto.ProductForm']")
-    private FluentWebElement egzamTypeValidation;
+    private WebElement egzamTypeValidation;
 
 
     @FindBy(css = "#ProductSelectionDto_CertificateNumber")
-    private FluentWebElement ownedCertificateNumber;
+    private WebElement ownedCertificateNumber;
     @FindBy(css = "span[data-val-date='ProductSelectionDto_CertificateNumber']")
-    private FluentWebElement ownedCertificateNumberValidation;
+    private WebElement ownedCertificateNumberValidation;
     @FindBy(css = "#ProductSelectionDto_CertificateDateOfIssue")
-    private FluentWebElement ownedCertificateIssueDate;
+    private WebElement ownedCertificateIssueDate;
     @FindBy(css = "span[data-val-date='ProductSelectionDto_CertificateDateOfIssue']")
-    private FluentWebElement ownedCertificateIssueDateValidation;
+    private WebElement ownedCertificateIssueDateValidation;
     @FindBy(css = "#ProductSelectionDto_CertificateProvider")
-    private FluentWebElement ownedCertificateIssuedBy;
+    private WebElement ownedCertificateIssuedBy;
     @FindBy(css = "span[data-val-date='ProductSelectionDto_CertificateProvider']")
-    private FluentWebElement ownedCertificateIssuedByValidation;
+    private WebElement ownedCertificateIssuedByValidation;
 
     @FindBy(css = ".Register-forwardBtn button")
-    private FluentWebElement nextButton;
+    private WebElement nextButton;
 
-    public EgzamEnrollPageStep1(WebDriver driver) {
+    public ExamEnrollPageStep1(WebDriver driver) {
         super(driver);
     }
 
@@ -57,7 +57,7 @@ public class EgzamEnrollPageStep1 extends EgzamEnrollPageBase {
         return getValidationMessage(languageValidateion);
     }
 
-    public void selelectEgazmType(EnrollEnums.PREFFERED_EGZAM_TYPE type) {
+    public void selelectExamType(EnrollEnums.PREFFERED_EGZAM_TYPE type) {
         if (type.equals(EnrollEnums.PREFFERED_EGZAM_TYPE.PAPER)) {
             egzamTypePaper.click();
         } else {
@@ -65,12 +65,12 @@ public class EgzamEnrollPageStep1 extends EgzamEnrollPageBase {
         }
     }
 
-    public String getEgzamTypeValidationMessage() {
+    public String getExamTypeValidationMessage() {
         return getValidationMessage(egzamTypeValidation);
     }
 
     public void setOwnedCertificateNumber(String certificateNumber) {
-        ownedCertificateNumber.text(certificateNumber);
+        ownedCertificateNumber.sendKeys(certificateNumber);
     }
 
     public String getOwnedCertificateNumberValidationMessage() {
@@ -78,7 +78,7 @@ public class EgzamEnrollPageStep1 extends EgzamEnrollPageBase {
     }
 
     public void setOwnedCertificateIssueDate(String certificateIssueDate) {
-        ownedCertificateIssueDate.text(certificateIssueDate);
+        ownedCertificateIssueDate.sendKeys(certificateIssueDate);
     }
 
     public String getOwnedCertificateIssueDateValidationMessage() {
@@ -86,11 +86,15 @@ public class EgzamEnrollPageStep1 extends EgzamEnrollPageBase {
     }
 
     public void setOwnedCertificateIssuedBy(String certificateIssuedBy) {
-        ownedCertificateIssuedBy.text(certificateIssuedBy);
+        ownedCertificateIssuedBy.sendKeys(certificateIssuedBy);
     }
 
     public String getOwnedCertificateIssuedByValidationMessage() {
         return getValidationMessage(ownedCertificateIssuedByValidation);
+    }
+
+    public boolean isOwnedCertificateRequired(){
+        return ownedCertificateNumber.isDisplayed();
     }
 
     public void goToStep2() {

@@ -1,50 +1,50 @@
 package pages;
 
-import net.serenitybdd.core.annotations.findby.FindBy;
-import org.fluentlenium.core.domain.FluentWebElement;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * Created by LewarskiT on 2016-11-18.
  */
-public class EgzamEnrollPageStep2 extends EgzamEnrollPageBase{
+public class ExamEnrollPageStep2 extends ExamEnrollPageBase {
     @FindBy(css = "#PersonDataDto_Name")
-    private FluentWebElement firstNameField;
-    @FindBy(css = "span for['PersonDataDto_Name']")
-    private FluentWebElement firstNameFieldValidation;
-    @FindBy(css = "#PersonDataDto.Surname")
-    private FluentWebElement lastNameField;
-    @FindBy(css = "span for['PersonDataDto.Surname']")
-    private FluentWebElement lastNameFieldValidation;
+    private WebElement firstNameField;
+    @FindBy(css = "span[for='PersonDataDto_Name']")
+    private WebElement firstNameFieldValidation;
+    @FindBy(css = "#PersonDataDto_Surname")
+    private WebElement lastNameField;
+    @FindBy(css = "span[for='PersonDataDto.Surname']")
+    private WebElement lastNameFieldValidation;
     @FindBy(css = "#PersonDataDto_Email")
-    private FluentWebElement emailField;
-    @FindBy(css = "span for['PersonDataDto_Email']")
-    private FluentWebElement emailFieldValidation;
+    private WebElement emailField;
+    @FindBy(css = "span[for='PersonDataDto_Email']")
+    private WebElement emailFieldValidation;
     @FindBy(css = "#PersonDataDto_Phone")
-    private FluentWebElement phoneField;
-    @FindBy(css = "span for['PersonDataDto_Phone']")
-    private FluentWebElement phoneFieldValidation;
+    private WebElement phoneField;
+    @FindBy(css = "span[for='PersonDataDto_Phone']")
+    private WebElement phoneFieldValidation;
 
     @FindBy(css = ".Register-backBtn button")
-    private FluentWebElement previousButton;
+    private WebElement previousButton;
 
     @FindBy(css = ".Register-forwardBtn button")
-    private FluentWebElement nextButton;
+    private WebElement nextButton;
 
-    public EgzamEnrollPageStep2(WebDriver driver) {
+    public ExamEnrollPageStep2(WebDriver driver) {
         super(driver);
     }
 
     public void setFirstName(String firstName) {
-        firstNameField.text(firstName);
+        firstNameField.sendKeys(firstName);
     }
 
     public String getfirstNameValidationMessage() {
         return getValidationMessage(firstNameFieldValidation);
     }
 
-    public void setLasttName(String lastName) {
-        lastNameField.text(lastName);
+    public void setLastName(String lastName) {
+        lastNameField.sendKeys(lastName);
     }
 
     public String getLastNameValidationMessage() {
@@ -52,7 +52,7 @@ public class EgzamEnrollPageStep2 extends EgzamEnrollPageBase{
     }
 
     public void setEmail(String email) {
-        emailField.text(email);
+        emailField.sendKeys(email);
     }
 
     public String getEmailValidationMessage() {
@@ -60,7 +60,7 @@ public class EgzamEnrollPageStep2 extends EgzamEnrollPageBase{
     }
 
     public void setPhone(String phone) {
-        phoneField.text(phone);
+        phoneField.sendKeys(phone);
     }
 
     public String getPhoneValidationMessage() {
