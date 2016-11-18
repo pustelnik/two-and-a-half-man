@@ -9,4 +9,12 @@ public class EgzamEnrollPageStep3 extends EgzamEnrollPageBase{
     public EgzamEnrollPageStep3(WebDriver driver) {
         super(driver);
     }
+
+
+    public void goToStep3() {
+        previousButton.click();
+    }
+    public void finishRegistration() {
+        nextButton.click();
+    }
 }
