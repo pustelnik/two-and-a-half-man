@@ -57,7 +57,7 @@ public class UserEnrollIndividually {
         for(org.openqa.selenium.Cookie cookie : driver.manage().getCookies()){
             System.out.println(cookie.getName() + " " + cookie.getValue());
         }*/
-       // egzamEnrollSteps.selectLanguage();
+        //egzamEnrollSteps.selectLanguage();
     }
 /*
     @Test

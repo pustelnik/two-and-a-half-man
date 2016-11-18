@@ -77,10 +77,6 @@ public class LandingPage extends BasePage {
     }
 
 
-
-
-
-
     public void clickGroupRegisterForExam(Session session){
         WebElement examSessionContainer = getExamSession(session);
         assertNotNull("Created exam not found on LandingPage exam list",examSessionContainer);
@@ -94,11 +90,27 @@ public class LandingPage extends BasePage {
     }
 
 
+    public void clickIndividualRegisterForExamByID(String examId){
+        WebElement registerIndividualBtn = getIndividualRegisterButtonById(examId);
+        assertNotNull("Couldn't find 'Rejestracja indywidualna' button for created exam on Landing page exam list",registerIndividualBtn);
+
+        registerIndividualBtn.click();
+    }
+
+
+
+
+
+
+
+
+    private WebElement getIndividualRegisterButtonById(String examId){
+        return  getDriver().findElement(By.cssSelector("td[data-productsessionid='"+examId+"']"));
+    }
 
 
     private WebElement getGroupRegisterButton(WebElement examSessionContainer){
         WebElement registerGroupBtn = examSessionContainer.findElement(By.cssSelector(".Agenda-groupBtnContainer.btn"));
-        System.out.println(registerGroupBtn.getText());
         return registerGroupBtn;
     }
 
