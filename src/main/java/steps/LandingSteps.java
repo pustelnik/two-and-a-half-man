@@ -27,6 +27,12 @@ public class LandingSteps extends BaseScenarioSteps{
     }
 
     @Step
+    public String chooseRegisterIndividualByID(String id){
+        landingPage.clickIndividualRegisterForExamByID(id);
+        return id;
+    }
+
+    @Step
     public Session chooseRegisterGroup(Session session) {
         landingPage.clickGroupRegisterForExam(session);
         return session;
