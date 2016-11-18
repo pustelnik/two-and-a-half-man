@@ -2,7 +2,8 @@ package steps.session;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import pages.AddSessionPage;
+import model.EnrollEnums.EGZAM_LEVEL;
+import model.EnrollEnums.EGZAM_PRODUCT;
 import pages.AddSessionPage.ManagementMethod;
 
 import java.time.LocalDateTime;
@@ -11,13 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static model.EnrollEnums.EGZAM_PRODUCT.BASIC_ISTQB;
-
 import static model.EnrollEnums.EGZAM_LEVEL.BASIC;
 import static model.EnrollEnums.EGZAM_LEVEL.EXPERT;
-import static pages.AddSessionPage.Level.BASIC;
-import static pages.AddSessionPage.Level.EXPERT;
-import static pages.AddSessionPage.Product.BASIC_ISTQB;
+import static model.EnrollEnums.EGZAM_PRODUCT.BASIC_ISTQB;
 
 /**
  * @author jakubp on 16.11.16.
@@ -64,17 +61,12 @@ public class SessionBuilder {
                 withExaminer(selectedSession.getString("examiner"));
     }
 
-    public static void main(String[] args) {
-        Session build = SessionBuilder.Instance().loadSessionFromConfig(3).build();
-        System.out.println();
+    private List<EGZAM_PRODUCT> createProductList(List<String> products) {
+        return products.stream().map(EGZAM_PRODUCT::valueOf).collect(Collectors.toList());
     }
 
-    private List<AddSessionPage.Product> createProductList(List<String> products) {
-        return products.stream().map(AddSessionPage.Product::valueOf).collect(Collectors.toList());
-    }
-
-    private List<AddSessionPage.Level> createLevelsList(List<String> levels) {
-        return levels.stream().map(AddSessionPage.Level::valueOf).collect(Collectors.toList());
+    private List<EGZAM_LEVEL> createLevelsList(List<String> levels) {
+        return levels.stream().map(EGZAM_LEVEL::valueOf).collect(Collectors.toList());
     }
 
     public SessionBuilder withSessionDate(LocalDateTime date) {
@@ -112,12 +104,12 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withLevels(List<AddSessionPage.Level> levels) {
+    public SessionBuilder withLevels(List<EGZAM_LEVEL> levels) {
         this.session.setLevels(levels);
         return this;
     }
 
-    public SessionBuilder withProducts(List<AddSessionPage.Product> products) {
+    public SessionBuilder withProducts(List<EGZAM_PRODUCT> products) {
         this.session.setProducts(products);
         return this;
     }
