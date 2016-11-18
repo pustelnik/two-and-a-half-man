@@ -1,7 +1,8 @@
 package pages;
 
 import com.jayway.awaitility.Duration;
-import gherkin.lexer.Tr;
+import model.EnrollEnums;
+import model.EnrollEnums.EGZAM_PRODUCT;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import org.fest.assertions.Assertions;
@@ -86,7 +87,7 @@ public class AddSessionPage extends NavigationBar {
      * size of levels list.
      * @param levels List of levels to click on.
      */
-    public AddSessionPage selectLevel(List<EGZAM_LEVEL> levels) {
+    public AddSessionPage selectLevel(List<EnrollEnums.EGZAM_LEVEL> levels) {
         levels.forEach(level -> clickOnDropDown(level.index, 0));
         assertThatSelectionNumberMatches(levels, selectLevelBtn().getAttribute("title"));
         return this;

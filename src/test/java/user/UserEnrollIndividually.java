@@ -1,7 +1,5 @@
 package user;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.*;
 import net.thucydides.core.pages.Pages;
@@ -12,11 +10,6 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import steps.BaseScenarioSteps;
 import steps.ExamEnrollSteps;
-import tools.LoginRequest;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static utils.Environment.TEST_PWD;
-import static utils.Environment.TEST_USR;
 
 /**
  * Created by LewarskiT on 2016-11-17.

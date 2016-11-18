@@ -2,10 +2,8 @@ package steps;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import model.EnrollEnums;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
-import pages.AddSessionPage;
 import pages.LandingPage;
 import steps.session.Session;
 import model.EnrollEnums.EGZAM_PRODUCT;
