@@ -15,16 +15,20 @@ import java.util.List;
  */
 public class BaseScenarioSteps extends ScenarioSteps {
 
-    BaseScenarioSteps(Pages pages) {
+    public BaseScenarioSteps(Pages pages) {
         super(pages);
     }
 
-    <T extends PageObject> T getCurrentPage(Class<T> pageClass) {
+    public <T extends PageObject> T getCurrentPage(Class<T> pageClass) {
         return getPages().currentPageAt(pageClass);
     }
 
     @Step
     public void goToDashboardPage() {
+        this.getDriver().get(BasePage.BASE_URL);
+    }
+    @Step
+    public void goToLandingPage() {
         this.getDriver().get(BasePage.BASE_URL);
     }
 
