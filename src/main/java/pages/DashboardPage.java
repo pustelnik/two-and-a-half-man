@@ -13,7 +13,6 @@ import java.util.List;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 
-@At("https://examplanner.pgs-soft.com/taahm")
 public class DashboardPage extends NavigationBar {
 
     // Navigation bar
