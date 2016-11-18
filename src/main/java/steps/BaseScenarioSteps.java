@@ -23,4 +23,8 @@ public class BaseScenarioSteps extends ScenarioSteps {
     public void goToDashboardPage() {
         this.getDriver().get(BasePage.BASE_URL);
     }
+    @Step
+    public void goToLandingPage() {
+        this.getDriver().get(BasePage.BASE_URL);
+    }
 }
