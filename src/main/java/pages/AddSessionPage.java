@@ -1,9 +1,7 @@
 package pages;
 
-import com.jayway.awaitility.Duration;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
-import org.fest.assertions.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,8 +10,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.jayway.awaitility.Awaitility.waitAtMost;
 import static java.lang.String.format;
+import static model.EnrollEnums.EGZAM_LEVEL;
+import static model.EnrollEnums.EGZAM_PRODUCT;
 import static org.fest.assertions.Assertions.assertThat;
 import static pages.AddSessionPage.ManagementMethod.PRODUCT;
 
@@ -47,36 +46,7 @@ public class AddSessionPage extends BasePage {
         PRODUCT, SESSION
     }
 
-    public enum Level {
-        BASIC(0), ADVANCE(1), EXPERT(2), OTHER(3);
 
-        /**
-         * Session level data-original-index
-         */
-        final int index;
-
-        Level(int index) {
-            this.index = index;
-        }
-    }
-
-    public enum Product {
-        BASIC_ISTQB(0, "52"), BASIC_REQB(1, "55"), EXPERT_TEST_PROCESS(2, "53"), EXPERT_TEST_MANAGEMENT(3, "54");
-
-        /**
-         * Product data-original-index
-         */
-        final int index;
-        /**
-         * Product delete btn (trash icon) id
-         */
-        final String deleteBtnId;
-
-        Product(int index, String deleteBtnId) {
-            this.index = index;
-            this.deleteBtnId = deleteBtnId;
-        }
-    }
 
     public WebElement sessionDateInput() {
         return find(By.id("SessionDto_Date"));
@@ -97,7 +67,7 @@ public class AddSessionPage extends BasePage {
 
     /**
      * Selecting seats number is valid only for product selection.
-     * @param method Product or Session
+     * @param method EGZAM_PRODUCT or Session
      */
     public AddSessionPage selectSeatManagementMethod(ManagementMethod method) {
         WebElementFacade radioBtn = seatManagementMethod(method);
@@ -113,7 +83,7 @@ public class AddSessionPage extends BasePage {
      * size of levels list.
      * @param levels List of levels to click on.
      */
-    public AddSessionPage selectLevel(List<Level> levels) {
+    public AddSessionPage selectLevel(List<EGZAM_LEVEL> levels) {
         levels.forEach(level -> clickOnDropDown(level.index, 0));
 //        assertThatSelectionNumberMatches(levels, selectLevelBtn().getAttribute("title"));
         return this;
@@ -125,7 +95,7 @@ public class AddSessionPage extends BasePage {
      * size of products list.
      * @param products List of products to click on.
      */
-    public AddSessionPage selectProduct(List<Product> products) {
+    public AddSessionPage selectProduct(List<EGZAM_PRODUCT> products) {
         products.forEach(product -> clickOnDropDown(product.index, 1));
 //        assertThatSelectionNumberMatches(products, selectProductBtn().getAttribute("title"));
         return this;
@@ -133,9 +103,9 @@ public class AddSessionPage extends BasePage {
 
     /**
      * Removed product from drop down list by clicking on remove button.
-     * @param product Product to be removed
+     * @param product EGZAM_PRODUCT to be removed
      */
-    public AddSessionPage removeProduct(Product product) {
+    public AddSessionPage removeProduct(EGZAM_PRODUCT product) {
         WebElementFacade deleteBtn = find(By.id(product.deleteBtnId));
         shouldBeVisible(deleteBtn);
         deleteBtn.click();
