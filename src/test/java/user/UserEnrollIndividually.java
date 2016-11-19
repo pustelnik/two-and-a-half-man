@@ -45,7 +45,7 @@ public class UserEnrollIndividually {
     @Test
     @Title("Try to enroll on an egzam session while not being logged in")
     public void enrollAsUnregisteredUser(){
-        examEnrollSteps.setAtendeeModel("test.atendee1");
+        examEnrollSteps.setAtendeeModel(1);
         examEnrollSteps.goToIndividualEnrollpage("464");
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2();
@@ -59,7 +59,7 @@ public class UserEnrollIndividually {
     public void enrollAsSelfWhenRegistered(){
         examEnrollSteps.loginUsingRequest(driver);
 
-        examEnrollSteps.setAtendeeModel("test.atendee2");
+        examEnrollSteps.setAtendeeModel(2);
         examEnrollSteps.goToIndividualEnrollpage("464");
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2();
@@ -72,6 +72,7 @@ public class UserEnrollIndividually {
     public void enrollSameUserTwice(){
         enrollAsUnregisteredUser();
         //start adding user for the second time
+        examEnrollSteps.goToIndividualEnrollpage("464");
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2AndCheckForDuplicateEmailMessage();
     }

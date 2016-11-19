@@ -25,8 +25,8 @@ public class ExamEnrollSteps extends BaseScenarioSteps {
         super(pages);        
     }
     
-    public void setAtendeeModel(String modelName){
-        atendeeModel = new AtendeeModel(ConfigFactory.load().getConfig(modelName));
+    public void setAtendeeModel(int attendeeID){
+        atendeeModel = new AtendeeModel(attendeeID);
     }
     
     public void clearAtendeeModel(){
@@ -43,7 +43,6 @@ public class ExamEnrollSteps extends BaseScenarioSteps {
     @Step
     public void fillFieldsFromStep1(){
         fillEnrollPageStep1();
-
         assertThat(examEnrollPageStep1.checkIfValidationWasTriggered()).describedAs("One of the fields was not set!").isFalse();
     }
 

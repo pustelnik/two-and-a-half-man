@@ -138,6 +138,10 @@ public class AddSessionSteps extends BaseScenarioSteps {
         this.session = SessionBuilder.Instance().build();
     }
 
+    public Session getSession() {
+        return this.session;
+    }
+
     public void setOneExamSession() {
         this.session = SessionBuilder.Instance().loadSessionFromConfig(1).build();
     }

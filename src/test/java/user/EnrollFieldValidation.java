@@ -1,14 +1,14 @@
 package user;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
-import net.thucydides.core.annotations.ManagedPages;
-import net.thucydides.core.annotations.Pending;
-import net.thucydides.core.annotations.Title;
+import net.thucydides.core.annotations.*;
 import net.thucydides.core.pages.Pages;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import steps.ExamEnrollSteps;
+import steps.session.AddSessionSteps;
 
 /**
  * Created by LewarskiT on 2016-11-17.
@@ -21,17 +21,33 @@ public class EnrollFieldValidation {
     @ManagedPages
     public Pages pages;
 
+    @Steps
+    AddSessionSteps addSessionSteps;
+
+    @Steps
+    ExamEnrollSteps examEnrollSteps;
+
+    @Before
+    public void createSession(){
+        addSessionSteps.setOneExamSession();
+        addSessionSteps.shouldCreateSession();
+        //examEnrollSteps.goToIndividualEnrollpage(addSessionSteps.getSession().get);
+    }
+
     @Test
     @Pending
-    @Title("Check if egzam details(date/location/product/level are displayed correctly")
-    public void validateEgzamDetails(){
-
+    @Title("Check if Exam details(date/location/product/level are displayed correctly")
+    public void validateExamDetails(){
+        //create session
+        //go to individual page
+        //check if Exam details are correct
     }
 
     @Test
     @Title("Check if email field is being validated correctly")
     @Pending
     public void checkEmailFieldForInvalidInput(){
+
         //check lenght
         //check format
         //check if correct email is accepted
