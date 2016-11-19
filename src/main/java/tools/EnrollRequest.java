@@ -30,9 +30,14 @@ public class EnrollRequest extends RequestBase{
         HttpPost httpPost = new HttpPost("/taahm/RegisterProduct/SetIndividual");
         httpPost.addHeader("Referer",HttpHost.create(BASE_URL)+"/taahm");
         httpPost.addHeader("Origin",HttpHost.create(BASE_URL).toURI());
+        httpPost.addHeader("Host",HttpHost.create(BASE_URL).getHostName());
         httpPost.addHeader("X-Requested-With","XMLHttpRequest");
         httpPost.addHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
 
         HttpResponseWrap res = sendPOSTFormRequest(HttpHost.create(BASE_URL),httpPost,mpEntity.build());
+    }
+
+    public void deleteUserEnrollment(int enrollId){
+        sendDeleteRequest(HttpHost.create(BASE_URL),"/taahm/Registration/DeleteRegistration/"+enrollId);
     }
 }

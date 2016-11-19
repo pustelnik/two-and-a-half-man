@@ -1,14 +1,20 @@
 package user;
 
+import model.EnrollEnums;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.*;
 import net.thucydides.core.pages.Pages;
+import org.fluentlenium.core.annotation.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import pages.session.SessionExamsPage;
 import steps.ExamEnrollSteps;
 import steps.session.AddSessionSteps;
+import tools.LoginRequest;
+import tools.RequestBase;
+import tools.SessionRequest;
 
 /**
  * Created by LewarskiT on 2016-11-17.
@@ -27,17 +33,30 @@ public class EnrollFieldValidation {
     @Steps
     ExamEnrollSteps examEnrollSteps;
 
+    @Page
+    SessionExamsPage sessionExamsPage;
+
     @Before
     public void createSession(){
-        addSessionSteps.setOneExamSession();
+
+        LoginRequest requestBase = examEnrollSteps.loginUsingRequest(driver);
+        /*addSessionSteps.setOneExamSession();
         addSessionSteps.shouldCreateSession();
-        //examEnrollSteps.goToIndividualEnrollpage(addSessionSteps.getSession().get);
+        sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
+
+        System.out.println(addSessionSteps.getSession().getId().get());
+        System.out.println(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
+*/
+        SessionRequest sessionRequest = new SessionRequest(requestBase.getCookieStore());
+        sessionRequest.deleteSession(487);
+        System.exit(1);
+
     }
 
     @Test
-    @Pending
     @Title("Check if Exam details(date/location/product/level are displayed correctly")
     public void validateExamDetails(){
+        System.out.println("test");
         //create session
         //go to individual page
         //check if Exam details are correct
