@@ -1,14 +1,19 @@
 package user;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
-import net.thucydides.core.annotations.ManagedPages;
-import net.thucydides.core.annotations.Pending;
-import net.thucydides.core.annotations.Title;
+import net.thucydides.core.annotations.*;
 import net.thucydides.core.pages.Pages;
+import org.fluentlenium.core.annotation.Page;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import pages.session.SessionExamsPage;
+import steps.enroll.ExamEnrollSteps;
+import steps.session.AddSessionSteps;
+import tools.RequestBase;
+import tools.SessionRequest;
 
 /**
  * Created by LewarskiT on 2016-11-17.
@@ -21,17 +26,43 @@ public class EnrollFieldValidation {
     @ManagedPages
     public Pages pages;
 
-    @Test
-    @Pending
-    @Title("Check if egzam details(date/location/product/level are displayed correctly")
-    public void validateEgzamDetails(){
+    @Steps
+    AddSessionSteps addSessionSteps;
 
+    @Steps
+    ExamEnrollSteps examEnrollSteps;
+
+    @Page
+    SessionExamsPage sessionExamsPage;
+
+    private RequestBase credentialsHolder;
+
+
+    @Before
+    public void createSession(){
+
+        credentialsHolder = examEnrollSteps.loginUsingRequest(driver);
+        addSessionSteps.setOneExamSession();
+        addSessionSteps.shouldCreateSession();
+        sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
+
+        //System.out.println(addSessionSteps.getSession().getId().get());
+        //System.out.println(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
+
+    }
+
+    @Test
+    @Title("Check if Exam details(date/location/product/level are displayed correctly")
+    public void validateExamDetails(){
+        examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
+        examEnrollSteps.checkIfExamHeaderIsCorrect(addSessionSteps.getSession());
     }
 
     @Test
     @Title("Check if email field is being validated correctly")
     @Pending
     public void checkEmailFieldForInvalidInput(){
+
         //check lenght
         //check format
         //check if correct email is accepted
@@ -100,5 +131,11 @@ public class EnrollFieldValidation {
     @Pending
     public void checIfLegalPolicySettingIsBeingValidated(){
 
+    }
+
+    @After
+    public void deleteSession(){
+        SessionRequest sessionRequest = new SessionRequest(credentialsHolder.getCookieStore());
+        sessionRequest.deleteSession(addSessionSteps.getSession().getId().get());
     }
 }

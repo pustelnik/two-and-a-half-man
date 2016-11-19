@@ -19,7 +19,7 @@ public class BasePage extends PageObject {
 
     public static final String BASE_URL = ConfigFactory.load("serenity.properties").getString("webdriver.base.url");
 
-    BasePage(WebDriver driver) {
+    public BasePage(WebDriver driver) {
         super(driver);
     }
 
@@ -29,7 +29,7 @@ public class BasePage extends PageObject {
     }
 
     public void shouldBeSelected(WebElement element) {
-        Assertions.assertThat(element.isSelected()).as(element.getText() + "is not selected").isTrue();
+        Assertions.assertThat(element.isSelected()).as(element.getText() + "Element is selected").isTrue();
     }
 
     public void decorateElement(WebElement element) {

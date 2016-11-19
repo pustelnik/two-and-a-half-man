@@ -72,8 +72,30 @@ public class CreateSession {
     }
 
     @Test
-    @Title("Session should not created - identical date, city and hour")
-    public void sessionDuplicateNotAllowed() {
+    @Title("Session should not created - identical date, city and postal code")
+    public void sessionDuplicateNotAllowedForIdenticalData() {
+        steps.shouldCreateSession();
+        steps.shouldOpenCreateNewSessionPage();
+        steps.shouldFillNewSessionForm();
+        steps.clickOnSaveSessionButton();
+        steps.shouldNotCreateNewSession();
+    }
+
+    @Test
+    @Title("Session should not created - identical date, different city and different postal code")
+    public void sessionDuplicateNotAllowedForIdenticalDate() {
+        // TODO implement this;
+        steps.shouldCreateSession();
+        steps.shouldOpenCreateNewSessionPage();
+        steps.shouldFillNewSessionForm();
+        steps.clickOnSaveSessionButton();
+        steps.shouldNotCreateNewSession();
+    }
+
+    @Test
+    @Title("Session should not created - identical time")
+    public void sessionDuplicateNotAllowedForIdenticalTime() {
+        // TODO implement this;
         steps.shouldCreateSession();
         steps.shouldOpenCreateNewSessionPage();
         steps.shouldFillNewSessionForm();
@@ -84,31 +106,32 @@ public class CreateSession {
     @Test
     @Title("'Dla sesji' should be default seat management method")
     public void defaultManagementMethod() {
+        steps.shouldOpenCreateNewSessionPage();
         steps.sessionShouldBeDefaultManagementMethod();
     }
 
     @Test
     public void createSessionForOneExam() {
         steps.setOneExamSession();
-        steps.shouldCreateNewSession();
+        steps.shouldCreateSession();
     }
 
     @Test
     public void createSessionForFewExams() {
         steps.setFewExamsSession();
-        steps.shouldCreateNewSession();
+        steps.shouldCreateSession();
     }
 
     @Test
-    @Pending
     public void createSessionWithMaxParticipantsPerExam() {
-
+        steps.setMaxProductSeats();
+        steps.shouldCreateSession();
     }
 
     @Test
-    @Pending
     public void createSessionWithMaxParticipantsPerExamSession() {
-
+        steps.setMaxSessionSeats();
+        steps.shouldCreateSession();
     }
 
     @Test
@@ -123,8 +146,17 @@ public class CreateSession {
         steps.shouldCancelActivateExamSession();
     }
 
-    public void shouldDeleteCreatedSession() {
+    @Test
+    public void shouldDeleteCreatedSessionInNewState() {
         steps.shouldCreateSession();
+        steps.shouldDeleteSession();
+    }
+
+    @Test
+    @Title("Should delete session in activated state when no users are registered to a session")
+    public void shouldDeleteCreatedSessionInActivatedState() {
+        steps.shouldCreateSession();
+        steps.shouldActivateExamSession();
         steps.shouldDeleteSession();
     }
 

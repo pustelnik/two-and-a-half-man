@@ -6,7 +6,7 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import org.openqa.selenium.WebElement;
 import pages.LandingPage;
-import steps.session.Session;
+import model.Session;
 import model.EnrollEnums.EGZAM_PRODUCT;
 
 import static org.junit.Assert.assertNotNull;

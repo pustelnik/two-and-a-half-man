@@ -5,6 +5,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -33,14 +34,18 @@ public class RequestBase {
     }
 
     public RequestBase(CookieStore cookieStore){
-        setupClientAndContext();
-        setCookieStore(cookieStore);
+        setupClientAndContext(cookieStore);
     }
 
     public void setupClientAndContext(){
         httpContext = HttpClientContext.create();
         httpCookieStore = new BasicCookieStore();
         httpClient = HttpClientBuilder.create().setDefaultCookieStore(httpCookieStore).build();
+    }
+
+    public void setupClientAndContext(CookieStore cookieStore){
+        httpContext = HttpClientContext.create();
+        httpClient = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build();
     }
 
     public List<Cookie> getCookies(){
@@ -55,20 +60,28 @@ public class RequestBase {
         this.httpCookieStore = cookieStore;
     }
 
-    public HttpResponseWrap performSimpleGet(HttpHost host,String path){
+    public HttpResponseWrap sendGetRequest(HttpHost host, String path){
         HttpResponseWrap httpResponseWrap = new HttpResponseWrap();
         //HttpHost host = new HttpHost(fullUrl,80);
         HttpGet getRequest = new HttpGet(path);
         try {
-            httpClient.execute(host, getRequest);
             CloseableHttpResponse httpResponse = httpClient.execute(host, getRequest, httpContext);
             httpResponseWrap = new HttpResponseWrap(httpResponse);
             EntityUtils.consume(httpResponse.getEntity());
         }
         catch (IOException ioex){
-            System.out.println(ioex.getMessage());
         }
         return httpResponseWrap;
+    }
+
+    public void sendDeleteRequest(HttpHost host, String path){
+        HttpDelete deleteRequest = new HttpDelete(path);
+        try {
+            CloseableHttpResponse httpResponse = httpClient.execute(host, deleteRequest, httpContext);
+            EntityUtils.consume(httpResponse.getEntity());
+        }
+        catch (IOException ioex){
+        }
     }
 
     public HttpResponseWrap sendPOSTFormRequest(HttpHost host,HttpPost httpPost, HttpEntity formParameters) {

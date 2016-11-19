@@ -32,10 +32,12 @@ public class LoginSteps extends BaseScenarioSteps {
 
     @Step
     public boolean login(String user,String password){
-        loginPage.
-                enterCredentials(user,password).pressLoginBtn();
-        return loginPage.invalidCredentialsErrorMsg().isVisible() &&
-                !CONF.getString("test.messages.loginPage.invalidCredentials").equals(loginPage.invalidCredentialsErrorMsg().getText());
+        loginPage.enterCredentials(user,password).pressLoginBtn();
+        return loginPage.isInvalidCredentialsErrorMsgVisible() && !isInvalidCredentialsErrorMessageValid();
+    }
+
+    private boolean isInvalidCredentialsErrorMessageValid() {
+        return CONF.getString("test.messages.loginPage.invalidCredentials").equals(loginPage.invalidCredentialsErrorMsg().getText());
     }
 
     @Step
@@ -50,7 +52,7 @@ public class LoginSteps extends BaseScenarioSteps {
 
     @Step
     public void verifyLoginStatus() {
-        assertTrue("Error msg is not visible", loginPage.invalidCredentialsErrorMsg().isVisible());
+        assertTrue("Error msg is not visible", loginPage.isInvalidCredentialsErrorMsgVisible());
         assertEquals("Invalid error message", CONF.getString("test.messages.loginPage.invalidCredentials"),
                 loginPage.invalidCredentialsErrorMsg().getText());
     }
