@@ -59,6 +59,10 @@ public class SessionNavigation extends NavigationBar {
         throw new FailedToParseSessionUrlException();
     }
 
+    public String getSessionDetailsUrl() {
+        return getDriver().getCurrentUrl();
+    }
+
     public SessionNavigation clickOnExamsLink() {
         examsLink.click();
         return this;
@@ -94,14 +98,18 @@ public class SessionNavigation extends NavigationBar {
         return this;
     }
 
+    public boolean isSessionActivated() {
+        return find(By.xpath(String.format("(//input[@type='checkbox'])[%d]", SessionStateChange.ACTIVATE_SESSION.index))).isSelected();
+    }
+
+    public class FailedToParseSessionUrlException extends Exception {
+    }
+
     protected void clickOnAlert(boolean acceptChange) {
         if (acceptChange) {
             getAlert().accept();
         } else {
             getAlert().dismiss();
         }
-    }
-
-    protected class FailedToParseSessionUrlException extends Exception {
     }
 }

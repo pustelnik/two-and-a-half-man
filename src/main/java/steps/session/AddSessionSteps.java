@@ -1,11 +1,17 @@
 package steps.session;
 
+import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
+import org.fest.assertions.Assertions;
 import pages.AddSessionPage;
 import pages.DashboardPage;
 import pages.session.SessionDetailsPage;
+import pages.session.SessionNavigation;
 import steps.BaseScenarioSteps;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static pages.AddSessionPage.ManagementMethod.SESSION;
@@ -48,7 +54,7 @@ public class AddSessionSteps extends BaseScenarioSteps {
 
     @Step
     public void shouldNotCreateNewSession() {
-        assertThat(addSessionPage.isCurrentPageAddSessionPage()).as("Session has been created").isTrue();
+        assertThat(addSessionPage.isCurrentPageAddSessionPage()).as("Session created").isTrue();
     }
 
     @Step
@@ -65,6 +71,8 @@ public class AddSessionSteps extends BaseScenarioSteps {
     @Step
     public void shouldSelectSeatsManagement() {
         addSessionPage.selectSeatManagementMethod(session.getManagementMethod());
+        assertThat(addSessionPage.getNumberOfSeats().isVisible()).as("Number is seats input should be visible ").isTrue();
+        addSessionPage.getNumberOfSeats().clear();
         addSessionPage.getNumberOfSeats().sendKeys(session.getNumberOfSeats());
     }
 
@@ -72,12 +80,16 @@ public class AddSessionSteps extends BaseScenarioSteps {
     public void shouldSelectLevels() {
         addSessionPage.selectLevelBtn().click();
         addSessionPage.selectLevel(session.getLevels());
+        // close dropdown menu
+        addSessionPage.selectLevelBtn().click();
     }
 
     @Step
     public void shouldSelectProducts() {
         addSessionPage.selectProductBtn().click();
         addSessionPage.selectProduct(session.getProducts());
+        // close dropdown menu
+        addSessionPage.selectProductBtn().click();
     }
 
     @Step
@@ -133,4 +145,13 @@ public class AddSessionSteps extends BaseScenarioSteps {
     public void setFewExamsSession() {
         this.session = SessionBuilder.Instance().loadSessionFromConfig(2).build();
     }
+
+    public void setMaxSessionSeats() {
+        this.session = SessionBuilder.Instance().loadSessionFromConfig(4).build();
+    }
+
+    public void setMaxProductSeats() {
+        this.session = SessionBuilder.Instance().loadSessionFromConfig(5).build();
+    }
+
 }

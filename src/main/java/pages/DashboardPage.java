@@ -3,15 +3,11 @@ package pages;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
-import net.thucydides.core.annotations.At;
-import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
-
-import static org.fest.assertions.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 public class DashboardPage extends NavigationBar {
 
@@ -37,6 +33,7 @@ public class DashboardPage extends NavigationBar {
     }
 
     public void clickOnLoginLink() {
+        waitFor(loginLink).waitUntilVisible();
         loginLink.click();
     }
 
@@ -44,22 +41,12 @@ public class DashboardPage extends NavigationBar {
         addSessionBtn().click();
     }
 
-    private WebElementFacade addSessionBtn() {
-        WebElementFacade addSessionBtn = dashboardButtons().get(0);
-        shouldBeVisible(addSessionBtn);
-        return addSessionBtn;
+    private WebElement addSessionBtn() {
+        return find(By.cssSelector("a[href=\"/taahm/Session/AddSession\"]"));
     }
 
-    private WebElementFacade addApplicationBtn() {
-        WebElementFacade addApplicationBtn = dashboardButtons().get(0);
-        shouldBeVisible(addApplicationBtn);
-        return addApplicationBtn;
-    }
-
-    private List<WebElementFacade> dashboardButtons() {
-        List<WebElementFacade> buttons = findAll(By.cssSelector(".btn.btn-light.btn-backofficeTop"));
-        assertThat(buttons).isNotEmpty().as("Add session and add application is not found");
-        return buttons;
+    private WebElement addApplicationBtn() {
+        return find(By.cssSelector("a[href=\"/taahm/Registration/List\"]"));
     }
 
     public void clickOnAddApplicationBtn() {
@@ -69,6 +56,6 @@ public class DashboardPage extends NavigationBar {
     public void languageSelection(Language language) {
         languageDropDown.click();
         languageDropDown.selectByValue(language.val);
-        Assert.assertThat(languageDropDown.getSelectedVisibleTextValue(), is(language.val));
+        assertThat(languageDropDown.getSelectedVisibleTextValue(), is(language.val));
     }
 }

@@ -1,5 +1,6 @@
 package pages.session;
 
+import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -47,6 +48,10 @@ public class SessionDetailsPage extends SessionNavigation {
         }
         assertThatUrlHasChanged(currentUrl);
         return this;
+    }
+
+    public boolean isInvalidSessionId() {
+        return find(By.cssSelector(".text-danger")).isVisible();
     }
 
     public WebElement getSessionDate() {
