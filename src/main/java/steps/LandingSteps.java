@@ -5,7 +5,7 @@ import com.typesafe.config.ConfigFactory;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import pages.LandingPage;
-import steps.session.Session;
+import model.Session;
 import model.EnrollEnums.EGZAM_PRODUCT;
 
 

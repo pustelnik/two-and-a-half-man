@@ -2,7 +2,6 @@ package model;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import steps.session.SessionBuilder;
 
 import java.util.List;
 

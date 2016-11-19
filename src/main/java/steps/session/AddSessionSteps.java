@@ -1,5 +1,7 @@
 package steps.session;
 
+import model.Session;
+import model.SessionBuilder;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import org.apache.log4j.LogManager;

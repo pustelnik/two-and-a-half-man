@@ -1,18 +1,17 @@
 package user;
 
-import model.EnrollEnums;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.*;
 import net.thucydides.core.pages.Pages;
 import org.fluentlenium.core.annotation.Page;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import pages.session.SessionExamsPage;
-import steps.ExamEnrollSteps;
+import steps.enroll.ExamEnrollSteps;
 import steps.session.AddSessionSteps;
-import tools.LoginRequest;
 import tools.RequestBase;
 import tools.SessionRequest;
 
@@ -36,30 +35,27 @@ public class EnrollFieldValidation {
     @Page
     SessionExamsPage sessionExamsPage;
 
+    private RequestBase credentialsHolder;
+
+
     @Before
     public void createSession(){
 
-        LoginRequest requestBase = examEnrollSteps.loginUsingRequest(driver);
-        /*addSessionSteps.setOneExamSession();
+        credentialsHolder = examEnrollSteps.loginUsingRequest(driver);
+        addSessionSteps.setOneExamSession();
         addSessionSteps.shouldCreateSession();
         sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
 
-        System.out.println(addSessionSteps.getSession().getId().get());
-        System.out.println(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
-*/
-        SessionRequest sessionRequest = new SessionRequest(requestBase.getCookieStore());
-        sessionRequest.deleteSession(487);
-        System.exit(1);
+        //System.out.println(addSessionSteps.getSession().getId().get());
+        //System.out.println(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
 
     }
 
     @Test
     @Title("Check if Exam details(date/location/product/level are displayed correctly")
     public void validateExamDetails(){
-        System.out.println("test");
-        //create session
-        //go to individual page
-        //check if Exam details are correct
+        examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
+        examEnrollSteps.checkIfExamHeaderIsCorrect(addSessionSteps.getSession());
     }
 
     @Test
@@ -135,5 +131,11 @@ public class EnrollFieldValidation {
     @Pending
     public void checIfLegalPolicySettingIsBeingValidated(){
 
+    }
+
+    @After
+    public void deleteSession(){
+        SessionRequest sessionRequest = new SessionRequest(credentialsHolder.getCookieStore());
+        sessionRequest.deleteSession(addSessionSteps.getSession().getId().get());
     }
 }

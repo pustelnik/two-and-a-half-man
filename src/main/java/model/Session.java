@@ -1,4 +1,4 @@
-package steps.session;
+package model;
 
 import model.EnrollEnums;
 import pages.AddSessionPage.ManagementMethod;

@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import steps.BaseScenarioSteps;
-import steps.ExamEnrollSteps;
+import steps.enroll.ExamEnrollSteps;
 
 /**
  * Created by LewarskiT on 2016-11-17.

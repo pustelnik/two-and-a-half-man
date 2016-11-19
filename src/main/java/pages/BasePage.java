@@ -19,7 +19,7 @@ public class BasePage extends PageObject {
 
     public static final String BASE_URL = ConfigFactory.load("serenity.properties").getString("webdriver.base.url");
 
-    BasePage(WebDriver driver) {
+    public BasePage(WebDriver driver) {
         super(driver);
     }
 

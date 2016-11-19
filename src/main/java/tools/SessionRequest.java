@@ -33,7 +33,6 @@ public class SessionRequest extends RequestBase{
         try {
             CloseableHttpResponse httpResponse = httpClient.execute(HttpHost.create(BASE_URL), deleteRequest, httpContext);
             HttpResponseWrap httpResponseWrap = new HttpResponseWrap(httpResponse);
-            System.out.println(httpResponseWrap.getHtmlContent());
             EntityUtils.consume(httpResponse.getEntity());
         }
         catch (IOException ioex){

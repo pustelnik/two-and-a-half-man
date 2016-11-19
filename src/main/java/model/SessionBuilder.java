@@ -1,4 +1,4 @@
-package steps.session;
+package model;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -30,7 +30,7 @@ public class SessionBuilder {
 
     private SessionBuilder() {
         session = new Session(
-                LocalDateTime.now().plusWeeks(2).plusMinutes(1),
+                LocalDateTime.now().plusWeeks(1).plusMinutes(1),
                 "95-100",
                 "Lodz"+ new Random().nextInt((100-0)+1)+1,
                 "Fabryczna 17",
