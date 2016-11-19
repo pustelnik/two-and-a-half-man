@@ -1,17 +1,14 @@
 package steps.session;
 
-import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
-import org.fest.assertions.Assertions;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import pages.AddSessionPage;
 import pages.DashboardPage;
 import pages.session.SessionDetailsPage;
 import pages.session.SessionNavigation;
 import steps.BaseScenarioSteps;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static pages.AddSessionPage.ManagementMethod.SESSION;
@@ -22,6 +19,7 @@ import static pages.session.SessionNavigation.SessionStateChange.ACTIVATE_SESSIO
  */
 public class AddSessionSteps extends BaseScenarioSteps {
 
+    private static final Logger LOGGER = LogManager.getLogger(AddSessionSteps.class);
     private AddSessionPage addSessionPage = getCurrentPage(AddSessionPage.class);
     private DashboardPage dashboardPage = getCurrentPage(DashboardPage.class);
     private SessionDetailsPage sessionDetailsPage = getCurrentPage(SessionDetailsPage.class);
@@ -59,7 +57,12 @@ public class AddSessionSteps extends BaseScenarioSteps {
 
     @Step
     public void shouldCreateNewSession() {
-        assertThat(addSessionPage.isCurrentPageSessionDetailsPage()).as("Session has not been created").isTrue();
+        assertThat(addSessionPage.isCurrentPageSessionDetailsPage()).as("Session created").isTrue();
+        try {
+            session.setId(sessionDetailsPage.getSessionId());
+        } catch (SessionNavigation.FailedToParseSessionUrlException e) {
+            LOGGER.warn(e);
+        }
     }
 
     @Step
