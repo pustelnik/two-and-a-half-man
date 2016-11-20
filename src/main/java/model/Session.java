@@ -1,14 +1,12 @@
 package model;
 
-import model.EnrollEnums;
+import model.EnrollEnums.EGZAM_LEVEL;
+import model.EnrollEnums.EGZAM_PRODUCT;
 import pages.AddSessionPage.ManagementMethod;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import model.EnrollEnums.EGZAM_LEVEL;
-import model.EnrollEnums.EGZAM_PRODUCT;
 /**
  * @author jakubp on 16.11.16.
  */
@@ -21,8 +19,9 @@ public class Session {
     private String additionalInfo;
     private ManagementMethod managementMethod;
     private String numberOfSeats;
-    private List<EnrollEnums.EGZAM_LEVEL> levels;
-    private List<EnrollEnums.EGZAM_PRODUCT> products;
+    private List<EGZAM_LEVEL> levels;
+    private List<EGZAM_PRODUCT> products;
+    private List<Exam> exams;
     private String examiner;
 
     public Session(
@@ -35,6 +34,7 @@ public class Session {
             String numberOfSeats,
             List<EGZAM_LEVEL> levels,
             List<EGZAM_PRODUCT> products,
+            List<Exam> exams,
             String examiner) {
         this.sessionDate = sessionDate;
         this.postalCode = postalCode;
@@ -45,6 +45,7 @@ public class Session {
         this.numberOfSeats = numberOfSeats;
         this.levels = levels;
         this.products = products;
+        this.exams = exams;
         this.examiner = examiner;
     }
 
@@ -88,6 +89,10 @@ public class Session {
         return examiner;
     }
 
+    public List<Exam> getExams() {
+        return exams;
+    }
+
     public void setSessionDate(LocalDateTime sessionDate) {
         this.sessionDate = sessionDate;
     }
@@ -124,6 +129,10 @@ public class Session {
         this.products = products;
     }
 
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
+    }
+
     public void setExaminer(String examiner) {
         this.examiner = examiner;
     }
@@ -134,5 +143,10 @@ public class Session {
 
     public void setId(int id) {
         this.id = Optional.of(id);
+    }
+
+    @Override
+    public String toString() {
+        return sessionDate + " " + city + " " + address + " " + postalCode;
     }
 }

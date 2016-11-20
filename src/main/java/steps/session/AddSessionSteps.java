@@ -3,14 +3,19 @@ package steps.session;
 import model.Session;
 import model.SessionBuilder;
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.annotations.Title;
 import net.thucydides.core.pages.Pages;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pages.AddSessionPage;
 import pages.DashboardPage;
 import pages.session.SessionDetailsPage;
 import pages.session.SessionNavigation;
 import steps.BaseScenarioSteps;
+import tools.RequestBase;
+import tools.SessionRequest;
+
+import java.util.Optional;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static pages.AddSessionPage.ManagementMethod.SESSION;
@@ -26,6 +31,7 @@ public class AddSessionSteps extends BaseScenarioSteps {
     private DashboardPage dashboardPage = getCurrentPage(DashboardPage.class);
     private SessionDetailsPage sessionDetailsPage = getCurrentPage(SessionDetailsPage.class);
     private Session session = SessionBuilder.Instance().build();
+    private Optional<Session> sessionCopy = Optional.empty();
 
     public AddSessionSteps(Pages pages) {
         super(pages);
@@ -39,7 +45,6 @@ public class AddSessionSteps extends BaseScenarioSteps {
         shouldSelectLevels();
         shouldSelectProducts();
         shouldSelectExaminer();
-
     }
 
     @Step
@@ -54,17 +59,15 @@ public class AddSessionSteps extends BaseScenarioSteps {
 
     @Step
     public void shouldNotCreateNewSession() {
-        assertThat(addSessionPage.isCurrentPageAddSessionPage()).as("Session created").isTrue();
+        assertThat(addSessionPage.isCurrentPageAddSessionPage()).as("Session not created").isTrue();
+        setLastSessionId();
     }
 
+
     @Step
-    public void shouldCreateNewSession() {
+    public void sessionShouldBeCreated() {
         assertThat(addSessionPage.isCurrentPageSessionDetailsPage()).as("Session created").isTrue();
-        try {
-            session.setId(sessionDetailsPage.getSessionId());
-        } catch (SessionNavigation.FailedToParseSessionUrlException e) {
-            LOGGER.warn(e);
-        }
+        setLastSessionId();
     }
 
     @Step
@@ -76,9 +79,11 @@ public class AddSessionSteps extends BaseScenarioSteps {
     @Step
     public void shouldSelectSeatsManagement() {
         addSessionPage.selectSeatManagementMethod(session.getManagementMethod());
-        assertThat(addSessionPage.getNumberOfSeats().isVisible()).as("Number is seats input should be visible ").isTrue();
-        addSessionPage.getNumberOfSeats().clear();
-        addSessionPage.getNumberOfSeats().sendKeys(session.getNumberOfSeats());
+        if(session.getManagementMethod().equals(SESSION)) {
+            assertThat(addSessionPage.getNumberOfSeats().isVisible()).as("Number is seats input should be visible ").isTrue();
+            addSessionPage.getNumberOfSeats().clear();
+            addSessionPage.getNumberOfSeats().sendKeys(session.getNumberOfSeats());
+        }
     }
 
     @Step
@@ -92,9 +97,14 @@ public class AddSessionSteps extends BaseScenarioSteps {
     @Step
     public void shouldSelectProducts() {
         addSessionPage.selectProductBtn().click();
-        addSessionPage.selectProduct(session.getProducts());
+        if(session.getManagementMethod().equals(SESSION)) {
+            addSessionPage.selectProduct(session.getProducts());
+            addSessionPage.selectProductBtn().click();
+        } else {
+            addSessionPage.selectProductByExams(session.getExams());
+        }
         // close dropdown menu
-        addSessionPage.selectProductBtn().click();
+
     }
 
     @Step
@@ -121,7 +131,38 @@ public class AddSessionSteps extends BaseScenarioSteps {
         shouldOpenCreateNewSessionPage();
         shouldFillNewSessionForm();
         clickOnSaveSessionButton();
-        shouldCreateNewSession();
+        sessionShouldBeCreated();
+    }
+
+    @Step
+    public void shouldCreateSession(Session session) {
+        this.sessionCopy = Optional.of(this.session);
+        this.session = session;
+        shouldOpenCreateNewSessionPage();
+        shouldFillNewSessionForm();
+        clickOnSaveSessionButton();
+    }
+
+    @Step
+    public void printToReport(String msg) {
+        // prints String to the test report
+    }
+
+    @Step
+    @Title("Delete session using delete request")
+    public void sessionDeleteRequest() {
+        RequestBase requestBase = loginUsingRequest(getDriver());
+        SessionRequest sessionRequest = new SessionRequest(requestBase.getCookieStore());
+        if(session.getId().isPresent()) {
+            int sessionId = session.getId().get();
+            LOGGER.debug("Sending DELETE session " + sessionId);
+            sessionRequest.deleteSession(sessionId);
+        }
+        if(sessionCopy.isPresent() && sessionCopy.get().getId().isPresent()) {
+            int sessionId = sessionCopy.get().getId().get();
+            LOGGER.debug("Sending DELETE session " + sessionId);
+            sessionRequest.deleteSession(sessionId);
+        }
     }
 
     @Step
@@ -159,8 +200,24 @@ public class AddSessionSteps extends BaseScenarioSteps {
         this.session = SessionBuilder.Instance().loadSessionFromConfig(4).build();
     }
 
+    public void setOverMaxSessionSeatsPerProduct() {
+        this.session = SessionBuilder.Instance().loadSessionFromConfig(7).build();
+    }
+
+    public void setOverMinSessionSeatsPerProduct() {
+        this.session = SessionBuilder.Instance().loadSessionFromConfig(8).build();
+    }
+
     public void setMaxProductSeats() {
-        this.session = SessionBuilder.Instance().loadSessionFromConfig(5).build();
+        this.session = SessionBuilder.Instance().loadSessionFromConfig(6).build();
+    }
+
+    private void setLastSessionId() {
+        try {
+            session.setId(sessionDetailsPage.getSessionId());
+        } catch (SessionNavigation.FailedToParseSessionUrlException e) {
+            LOGGER.warn(e);
+        }
     }
 
 }
