@@ -1,6 +1,9 @@
 package model;
 
 import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
+import java.util.List;
 
 import static model.EnrollEnums.*;
 
@@ -36,7 +39,14 @@ public class AtendeeModel {
     private boolean acceptMarketingPolicy;
 
 
-    public AtendeeModel(Config configData) {
+    public AtendeeModel(int  attendeeID) {
+        Config conf = ConfigFactory.load();
+        List<? extends Config> configList = conf.getConfigList("test.attendees");
+        if(configList.size() < attendeeID) {
+            throw new NotExistingAttendeeConfig();
+        }
+        Config configData = configList.get(attendeeID-1);
+
         //todo problem - jak nie ma pola w configu to leci exception
         setPrefferedLanguage(configData.getInt("prefferedLanguage")).
         setPrefferedExamType(configData.getString("prefferedExamType")).
@@ -251,5 +261,8 @@ public class AtendeeModel {
     public AtendeeModel setAcceptMarketingPolicy(boolean acceptMarketingPolicy) {
         this.acceptMarketingPolicy = acceptMarketingPolicy;
         return this;
+    }
+
+    private class NotExistingAttendeeConfig extends RuntimeException {
     }
 }

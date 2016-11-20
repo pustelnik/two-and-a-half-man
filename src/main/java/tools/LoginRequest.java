@@ -42,7 +42,7 @@ public class LoginRequest extends RequestBase{
     }
 
     private String obtainRequestVerificationCode(){
-        HttpResponseWrap pageConetent = performSimpleGet(HttpHost.create(BASE_URL),"/taahm/Account/Login");
+        HttpResponseWrap pageConetent = sendGetRequest(HttpHost.create(BASE_URL),"/taahm/Account/Login");
         if(pageConetent.getStatusCode() == 200){
             Pattern pattern = Pattern.compile("<input name=\"__RequestVerificationToken\"\\s?(type=\"hidden\")?\\s?value=\"(.*?)\"\\s?\\/>");
             Matcher matcher = pattern.matcher(pageConetent.getHtmlContent());

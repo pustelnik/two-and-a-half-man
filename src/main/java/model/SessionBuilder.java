@@ -1,4 +1,4 @@
-package steps.session;
+package model;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static model.EnrollEnums.EGZAM_LEVEL.BASIC;
@@ -29,9 +30,9 @@ public class SessionBuilder {
 
     private SessionBuilder() {
         session = new Session(
-                LocalDateTime.now().plusWeeks(2),
+                LocalDateTime.now().plusWeeks(1).plusMinutes(1),
                 "95-100",
-                "Lodz",
+                "Lodz"+ new Random().nextInt((100-0)+1)+1,
                 "Fabryczna 17",
                 "brak",
                 ManagementMethod.SESSION,

@@ -1,16 +1,19 @@
-package steps.session;
+package model;
 
 import model.EnrollEnums;
 import pages.AddSessionPage.ManagementMethod;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import model.EnrollEnums.EGZAM_LEVEL;
 import model.EnrollEnums.EGZAM_PRODUCT;
 /**
  * @author jakubp on 16.11.16.
  */
 public class Session {
+    private Optional<Integer> id = Optional.empty();
     private LocalDateTime sessionDate;
     private String postalCode;
     private String city;
@@ -123,5 +126,13 @@ public class Session {
 
     public void setExaminer(String examiner) {
         this.examiner = examiner;
+    }
+
+    public Optional<Integer> getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = Optional.of(id);
     }
 }

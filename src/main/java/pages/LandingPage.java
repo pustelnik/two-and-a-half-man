@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import steps.session.Session;
+import model.Session;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

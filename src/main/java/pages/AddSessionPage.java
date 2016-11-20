@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.jayway.awaitility.Awaitility.await;
 import static com.jayway.awaitility.Awaitility.waitAtMost;
 import static java.lang.String.format;
 import static org.fest.assertions.Assertions.assertThat;
@@ -117,7 +118,7 @@ public class AddSessionPage extends NavigationBar {
     }
 
     public AddSessionPage selectExaminer(String examiner) {
-        fluent().$(".Session-row li[data-original-index=\"0\"]>a").forEach(element -> {
+        fluent().$(".Session-row li[data-original-index]>a>span[class=\"text\"]").forEach(element -> {
             if(element.getText().equals(examiner)) {
                 element.click();
             }
@@ -191,7 +192,7 @@ public class AddSessionPage extends NavigationBar {
         btn.click();
     }
 
-    public WebElementFacade SeatsNumberInput(int seatsNumber) {
+    public WebElementFacade seatsNumberInput(int seatsNumber) {
         WebElementFacade inputBox = find(By.name("SessionDto.SpaceForSession"));
 //        shouldBeVisible(inputBox);
         inputBox.sendKeys(String.valueOf(seatsNumber));
