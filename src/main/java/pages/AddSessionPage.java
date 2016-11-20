@@ -144,7 +144,7 @@ public class AddSessionPage extends NavigationBar {
     }
 
     public boolean isCurrentPageSessionDetailsPage() {
-        return getDriver().getCurrentUrl().matches(".*Session/Details/\\d{0,3}");
+        return getDriver().getCurrentUrl().matches(".*Session/Details/\\d*");
     }
 
     public WebElementFacade selectLevelBtn() {
