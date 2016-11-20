@@ -44,7 +44,9 @@ public class EnrollFieldValidation {
         credentialsHolder = examEnrollSteps.loginUsingRequest(driver);
         addSessionSteps.setOneExamSession();
         addSessionSteps.shouldCreateSession();
+        addSessionSteps.shouldActivateExamSession();
         sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
+        examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
 
         //System.out.println(addSessionSteps.getSession().getId().get());
         //System.out.println(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
@@ -54,7 +56,6 @@ public class EnrollFieldValidation {
     @Test
     @Title("Check if Exam details(date/location/product/level are displayed correctly")
     public void validateExamDetails(){
-        examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
         examEnrollSteps.checkIfExamHeaderIsCorrect(addSessionSteps.getSession());
     }
 

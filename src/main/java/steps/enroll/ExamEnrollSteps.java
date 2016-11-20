@@ -86,7 +86,7 @@ public class ExamEnrollSteps extends BaseScenarioSteps {
                 .describedAs("Exam city must be wrong").isTrue();
         LocalDateTime sessionDate = sessionObject.getSessionDate();
         DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
-        DateTimeFormatter day = DateTimeFormatter.ofPattern("MMM").withLocale(new Locale("pl","PL"));
+        DateTimeFormatter day = DateTimeFormatter.ofPattern("c MMM").withLocale(new Locale("pl","PL"));
 
         assertThat(examEnrollPageBase.checkIfExamHeaderContainsGivenDetails(sessionDate.format(time)))
                 .describedAs("Exam date must be wrong").isTrue();
