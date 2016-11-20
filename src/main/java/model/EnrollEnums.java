@@ -1,5 +1,7 @@
 package model;
 
+import java.util.NoSuchElementException;
+
 /**
  * Created by LewarskiT on 2016-11-17.
  */
@@ -96,6 +98,15 @@ public class EnrollEnums {
             this.index = index;
             this.deleteBtnId = deleteBtnId;
             this.name = name;
+        }
+
+        public static EGZAM_PRODUCT getProduct(String productName){
+            for(EGZAM_PRODUCT value : EGZAM_PRODUCT.values()){
+                if(value.name.equals(productName)){
+                    return value;
+                }
+            }
+            throw new NoSuchElementException("Unknown product");
         }
     }
 }
