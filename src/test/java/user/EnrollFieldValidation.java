@@ -69,9 +69,9 @@ public class EnrollFieldValidation {
 
     @Test
     @Title("Check if all required fields are set on Step1")
-    @Pending
     public void checkIfAllRequiredFieldsAreSetOnStep1(){
         examEnrollValidationSteps.triggerValidation();
+        //required fields
         examEnrollValidationSteps.checkIfStep1ValidateionWorksForRequiredFieldssAWhole();
         //check individual fields for format errors
 
@@ -86,6 +86,7 @@ public class EnrollFieldValidation {
         examEnrollSteps.setAtendeeModel(1);
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollValidationSteps.triggerValidation();
+        //required fields
         examEnrollValidationSteps.checkIfStep2ValidateionWorksForRequiredFieldssAWhole();
 
         examEnrollValidationSteps.checkForErrors();
@@ -98,8 +99,10 @@ public class EnrollFieldValidation {
         examEnrollSteps.setAtendeeModel(1);
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2();
+        //required fields
         examEnrollValidationSteps.triggerValidation();
         examEnrollValidationSteps.checkIfStep3ValidateionWorksForRequiredFieldssAWhole();
+        //format fields
 
         examEnrollValidationSteps.checkForErrors();
     }

@@ -42,6 +42,7 @@ public class BaseScenarioSteps extends ScenarioSteps {
 
     @Step
     public RequestBase loginUsingRequest(WebDriver driver){
+        goToDashboardPage();
         LoginRequest loginRequest = new LoginRequest();
         assertThat(loginRequest.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val))).describedAs("Login status").isTrue();
         feedCookiesToTheDriver(driver,loginRequest.getCookies());

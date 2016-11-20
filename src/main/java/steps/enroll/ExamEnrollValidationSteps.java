@@ -23,7 +23,7 @@ import static org.fest.assertions.Assertions.assertThat;
  * Created by MASTAH on 2016-11-20.
  */
 public class ExamEnrollValidationSteps extends ExamEnrollBaseSteps {
-    private Config validationMessages = ConfigFactory.load().getConfig("messages.enrollPage");
+    private Config validationMessages = ConfigFactory.load().getConfig("test.messages.enrollPage");
     private Map<String,String> foundErrors = new HashMap<>();
     public ExamEnrollValidationSteps(Pages pages) {
         super(pages);
@@ -73,12 +73,20 @@ public class ExamEnrollValidationSteps extends ExamEnrollBaseSteps {
 
     @Step
     public void checkIfStep2ValidateionWorksForRequiredFieldssAWhole(){
-
+        checkAndAddErrorIfNeeded("First name",examEnrollPageStep2.getfirstNameValidationMessage(),validationMessages.getString("firstNameRequired"));
+        checkAndAddErrorIfNeeded("Last name",examEnrollPageStep2.getLastNameValidationMessage(),validationMessages.getString("lastNameRequired"));
+        checkAndAddErrorIfNeeded("Email",examEnrollPageStep2.getEmailValidationMessage(),validationMessages.getString("emailRequired"));
     }
 
     @Step
     public void checkIfStep3ValidateionWorksForRequiredFieldssAWhole(){
-
+        checkAndAddErrorIfNeeded("First name",examEnrollPageStep3.getCertificateFirstNameValidation(),validationMessages.getString("certificateFirstNameRequired"));
+        checkAndAddErrorIfNeeded("Last name",examEnrollPageStep3.getCertificateLastNameValidation(),validationMessages.getString("certificateLastNameRequired"));
+        checkAndAddErrorIfNeeded("City",examEnrollPageStep3.getCityValidation(),validationMessages.getString("cityRequired"));
+        checkAndAddErrorIfNeeded("ZIP-Code",examEnrollPageStep3.getZipCodeValidation(),validationMessages.getString("zipCodeRequired"));
+        checkAndAddErrorIfNeeded("Address",examEnrollPageStep3.getAddressValidation(),validationMessages.getString("addressRequired"));
+        checkAndAddErrorIfNeeded("Invoice",examEnrollPageStep3.getInvoiceTypeValidation(),validationMessages.getString("invoceSettingRequired"));
+        checkAndAddErrorIfNeeded("Legal policy",examEnrollPageStep3.getLegalPolicyValidation(),validationMessages.getString("legalPolicyRequired"));
     }
 
     @Step
