@@ -51,10 +51,10 @@ public class SessionNavigation extends NavigationBar {
      * @return exam session id
      */
     public int getSessionId() throws FailedToParseSessionUrlException {
-        Pattern sessionIdPattern = Pattern.compile(".*([0-9]{3,})");
+        Pattern sessionIdPattern = Pattern.compile("-?\\d+");
         Matcher matcher = sessionIdPattern.matcher(getDriver().getCurrentUrl());
         if(matcher.find()) {
-            return Integer.parseInt(matcher.group(1));
+            return Integer.parseInt(matcher.group());
         }
         throw new FailedToParseSessionUrlException();
     }
