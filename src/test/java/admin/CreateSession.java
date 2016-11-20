@@ -1,14 +1,22 @@
 package admin;
 
+import model.Session;
+import model.SessionBuilder;
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.*;
+import net.thucydides.core.annotations.Managed;
+import net.thucydides.core.annotations.ManagedPages;
+import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.Title;
 import net.thucydides.core.pages.Pages;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import steps.LoginSteps;
 import steps.session.AddSessionSteps;
+
+import java.time.LocalDateTime;
 
 /**
  * @author jakubp on 16.11.16.
@@ -40,7 +48,7 @@ public class CreateSession {
         steps.shouldOpenCreateNewSessionPage();
         steps.shouldFillNewSessionForm();
         steps.clickOnSaveSessionButton();
-        steps.shouldCreateNewSession();
+        steps.sessionShouldBeCreated();
     }
 
     @Test
@@ -67,38 +75,6 @@ public class CreateSession {
         steps.shouldSetLocationData();
         steps.shouldSelectSeatsManagement();
         steps.shouldSelectLevels();
-        steps.clickOnSaveSessionButton();
-        steps.shouldNotCreateNewSession();
-    }
-
-    @Test
-    @Title("Session should not created - identical date, city and postal code")
-    public void sessionDuplicateNotAllowedForIdenticalData() {
-        steps.shouldCreateSession();
-        steps.shouldOpenCreateNewSessionPage();
-        steps.shouldFillNewSessionForm();
-        steps.clickOnSaveSessionButton();
-        steps.shouldNotCreateNewSession();
-    }
-
-    @Test
-    @Title("Session should not created - identical date, different city and different postal code")
-    public void sessionDuplicateNotAllowedForIdenticalDate() {
-        // TODO implement this;
-        steps.shouldCreateSession();
-        steps.shouldOpenCreateNewSessionPage();
-        steps.shouldFillNewSessionForm();
-        steps.clickOnSaveSessionButton();
-        steps.shouldNotCreateNewSession();
-    }
-
-    @Test
-    @Title("Session should not created - identical time")
-    public void sessionDuplicateNotAllowedForIdenticalTime() {
-        // TODO implement this;
-        steps.shouldCreateSession();
-        steps.shouldOpenCreateNewSessionPage();
-        steps.shouldFillNewSessionForm();
         steps.clickOnSaveSessionButton();
         steps.shouldNotCreateNewSession();
     }
@@ -158,6 +134,45 @@ public class CreateSession {
         steps.shouldCreateSession();
         steps.shouldActivateExamSession();
         steps.shouldDeleteSession();
+    }
+
+    @Test
+    @Title("Session should not be created - identical date, city and postal code")
+    public void sessionDuplicateNotAllowedForIdenticalData() {
+        Session session1 = SessionBuilder.Instance().
+                withSessionDate(LocalDateTime.now().plusWeeks(2).plusHours(2)).
+                withCity("Łódź").
+                withPostalCode("99-500").
+                build();
+        steps.shouldCreateSession(session1);
+        steps.sessionShouldBeCreated();
+        steps.shouldCreateSession(session1);
+        steps.shouldNotCreateNewSession();
+    }
+
+    @Test
+    @Title("Session should not be created for negative number of seats")
+    public void sessionShouldNotBeCreatedForNegativeSeatsNumber() {
+        Session negativeSeatsSession = SessionBuilder.Instance().
+                withNumberOfSeats("-500").
+                build();
+        steps.shouldCreateSession(negativeSeatsSession);
+        steps.shouldNotCreateNewSession();
+    }
+
+    @Test
+    @Title("Session should not be created for n > 999")
+    public void sessionShouldNotBeCreatedForBigNumberOfSeats() {
+        Session negativeSeatsSession = SessionBuilder.Instance().
+                withNumberOfSeats("1000").
+                build();
+        steps.shouldCreateSession(negativeSeatsSession);
+        steps.shouldNotCreateNewSession();
+    }
+
+    @After
+    public void cleanUpSession() {
+        steps.sessionDeleteRequest();
     }
 
 }

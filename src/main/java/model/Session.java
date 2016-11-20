@@ -1,14 +1,12 @@
 package model;
 
-import model.EnrollEnums;
+import model.EnrollEnums.EGZAM_LEVEL;
+import model.EnrollEnums.EGZAM_PRODUCT;
 import pages.AddSessionPage.ManagementMethod;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import model.EnrollEnums.EGZAM_LEVEL;
-import model.EnrollEnums.EGZAM_PRODUCT;
 /**
  * @author jakubp on 16.11.16.
  */
@@ -134,5 +132,10 @@ public class Session {
 
     public void setId(int id) {
         this.id = Optional.of(id);
+    }
+
+    @Override
+    public String toString() {
+        return sessionDate + " " + city + " " + address + " " + postalCode;
     }
 }
