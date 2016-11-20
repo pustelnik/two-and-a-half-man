@@ -3,13 +3,17 @@ package user;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.*;
 import net.thucydides.core.pages.Pages;
+import org.fluentlenium.core.annotation.Page;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import pages.session.SessionExamsPage;
 import steps.BaseScenarioSteps;
 import steps.enroll.ExamEnrollSteps;
+import steps.session.AddSessionSteps;
+import tools.RequestBase;
 
 /**
  * Created by LewarskiT on 2016-11-17.
@@ -23,23 +27,25 @@ public class UserEnrollIndividually {
     public Pages pages;
 
     @Steps
-    BaseScenarioSteps baseScenarioSteps;
-
-    @Steps
     ExamEnrollSteps examEnrollSteps;
 
-//todo
-    //-remove user enrollment after test
-    //add test to check if user can not enroll twice
+    @Steps
+    AddSessionSteps addSessionSteps;
+
+    @Page
+    SessionExamsPage sessionExamsPage;
+
+    private RequestBase credentialsHolder;
+    private int enrollmentID;
+
     @Before
     public void prepareEgzamSession(){
-        //create new session
-        //do it once for whole TS
-        /*LoginRequest loginRequest = new LoginRequest();
-        assertThat(loginRequest.login(CONF.getString(TEST_USR.val), CONF.getString(TEST_PWD.val))).describedAs("Login status").isTrue();
-        examEnrollSteps.feedCookiesToTheDriver(driver,loginRequest.getCookies());*/
-
-        //todo create a session and logout afer
+        credentialsHolder = examEnrollSteps.loginUsingRequest(driver);
+        addSessionSteps.setOneExamSession();
+        addSessionSteps.shouldCreateSession();
+        addSessionSteps.shouldActivateExamSession();
+        sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
+        examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
     }
 
     @Test

@@ -54,4 +54,8 @@ public class ExamEnrollPageBase extends BasePage {
     public boolean checkIfValidationWasTriggered(){
         return findAll(By.cssSelector(".field-validation-error")).stream().filter(element -> element.isDisplayed()).collect(Collectors.toList()).size()>0;
     }
+
+    public void goToNextStep() {
+        nextButton.click();
+    }
 }
