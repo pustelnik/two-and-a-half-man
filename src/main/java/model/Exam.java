@@ -11,10 +11,10 @@ import java.util.Optional;
  */
 public class Exam {
     private final EGZAM_PRODUCT product;
-    private final String numberOfSeats;
     private final EGZAM_LEVEL level;
+    private String numberOfSeats;
     private boolean registrationEnabled;
-    private Optional<Integer> id = Optional.empty();
+    private Optional<String> id = Optional.empty();
 
     public Exam(
             EGZAM_LEVEL level,
@@ -45,11 +45,15 @@ public class Exam {
         this.registrationEnabled = registrationEnabled;
     }
 
-    public Optional<Integer> getId() {
+    public Optional<String> getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = Optional.of(id);
+    }
+
+    public void setNumberOfSeats(String numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
     }
 }
