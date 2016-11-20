@@ -56,9 +56,6 @@ public class EnrollFieldValidation {
         sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
         examEnrollValidationSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
 
-        //System.out.println(addSessionSteps.getSession().getId().get());
-        //System.out.println(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
-
     }
 
     @Test
@@ -74,6 +71,8 @@ public class EnrollFieldValidation {
         //required fields
         examEnrollValidationSteps.checkIfStep1ValidateionWorksForRequiredFieldssAWhole();
         //check individual fields for format errors
+        examEnrollValidationSteps.checkCertificateNumberValidationForFormatErrors();
+        examEnrollValidationSteps.checkCertificateIssuedByValidationForFormatErrors();
 
         examEnrollValidationSteps.checkForErrors();
     }
@@ -88,6 +87,11 @@ public class EnrollFieldValidation {
         examEnrollValidationSteps.triggerValidation();
         //required fields
         examEnrollValidationSteps.checkIfStep2ValidateionWorksForRequiredFieldssAWhole();
+        //check individual fields for format errors
+        examEnrollValidationSteps.checkFirstNameValidationForFormatErrors();
+        examEnrollValidationSteps.checkLastNameValidationForFormatErrors();
+        examEnrollValidationSteps.checkEmailValidationForFormatErrors();
+        examEnrollValidationSteps.checkPhoneValidationForFormatErrors();
 
         examEnrollValidationSteps.checkForErrors();
     }
@@ -103,6 +107,11 @@ public class EnrollFieldValidation {
         examEnrollValidationSteps.triggerValidation();
         examEnrollValidationSteps.checkIfStep3ValidateionWorksForRequiredFieldssAWhole();
         //format fields
+        examEnrollValidationSteps.checkCertificateFirstNameValidationForFormatErrors();
+        examEnrollValidationSteps.checkCertificateLastNameValidationForFormatErrors();
+        examEnrollValidationSteps.checkZipCodeValidationForFormatErrors();
+        examEnrollValidationSteps.checkAddressValidationForFormatErrors();
+        examEnrollValidationSteps.checkCityValidationForFormatErrors();
 
         examEnrollValidationSteps.checkForErrors();
     }

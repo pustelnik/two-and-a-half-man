@@ -24,6 +24,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class ExamEnrollValidationSteps extends ExamEnrollBaseSteps {
     private Config validationMessages = ConfigFactory.load().getConfig("test.messages.enrollPage");
+    private Config validationData = ConfigFactory.load().getConfig("test.enrollValidation");
     private Map<String,String> foundErrors = new HashMap<>();
     public ExamEnrollValidationSteps(Pages pages) {
         super(pages);
@@ -87,6 +88,89 @@ public class ExamEnrollValidationSteps extends ExamEnrollBaseSteps {
         checkAndAddErrorIfNeeded("Address",examEnrollPageStep3.getAddressValidation(),validationMessages.getString("addressRequired"));
         checkAndAddErrorIfNeeded("Invoice",examEnrollPageStep3.getInvoiceTypeValidation(),validationMessages.getString("invoceSettingRequired"));
         checkAndAddErrorIfNeeded("Legal policy",examEnrollPageStep3.getLegalPolicyValidation(),validationMessages.getString("legalPolicyRequired"));
+    }
+
+    @Step
+    public void checkCertificateNumberValidationForFormatErrors(){
+        examEnrollPageStep1.setOwnedCertificateNumber(validationData.getString("toLongCertificateNumber"));
+        checkAndAddErrorIfNeeded("Certificate number - format",examEnrollPageStep1.getOwnedCertificateNumberValidationMessage(),validationMessages.getString("ownedCertificateNumberFormat"));
+    }
+    @Step
+    public void checkCertificateIssuedByValidationForFormatErrors(){
+        examEnrollPageStep1.setOwnedCertificateNumber(validationData.getString("toLongCertificateIssuedBy"));
+        checkAndAddErrorIfNeeded("Certificate Issuer - format",examEnrollPageStep1.getOwnedCertificateIssuedByValidationMessage(),validationMessages.getString("ownedCertificateIssuedByFormat"));
+    }
+
+    @Step
+    public void checkFirstNameValidationForFormatErrors(){
+        examEnrollPageStep2.setFirstName(validationData.getString("fistNameTooShort"));
+        checkAndAddErrorIfNeeded("First name - format - too short",examEnrollPageStep2.getfirstNameValidationMessage(),validationMessages.getString("firstNameFormat"));
+        examEnrollPageStep2.setFirstName(validationData.getString("fistNameTooLong"));
+        checkAndAddErrorIfNeeded("First name - format - too long",examEnrollPageStep2.getfirstNameValidationMessage(),validationMessages.getString("firstNameFormat"));
+    }
+
+    @Step
+    public void checkLastNameValidationForFormatErrors(){
+        examEnrollPageStep2.setLastName(validationData.getString("lastNameTooShort"));
+        checkAndAddErrorIfNeeded("Last name - format - too short",examEnrollPageStep2.getLastNameValidationMessage(),validationMessages.getString("lastNameFormat"));
+        examEnrollPageStep2.setFirstName(validationData.getString("fistNameTooLong"));
+        checkAndAddErrorIfNeeded("Last name - format - too long",examEnrollPageStep2.getLastNameValidationMessage(),validationMessages.getString("lastNameFormat"));
+    }
+
+    @Step
+    public void checkEmailValidationForFormatErrors(){
+        examEnrollPageStep2.setEmail(validationData.getString("wrongEmailFormat1"));
+        checkAndAddErrorIfNeeded("Email - format",examEnrollPageStep2.getEmailValidationMessage(),validationMessages.getString("invalidEmailFormat"));
+        examEnrollPageStep2.setEmail(validationData.getString("wrongEmailFormat2"));
+        checkAndAddErrorIfNeeded("Email - format",examEnrollPageStep2.getEmailValidationMessage(),validationMessages.getString("invalidEmailFormat"));
+    }
+    @Step
+    public void checkPhoneValidationForFormatErrors(){
+        examEnrollPageStep2.setPhone(validationData.getString("phoneNumberTooLong"));
+        checkAndAddErrorIfNeeded("Phone - format - too short",examEnrollPageStep2.getPhoneValidationMessage(),validationMessages.getString("invalidPhoneLength"));
+        examEnrollPageStep2.setPhone(validationData.getString("phoneNumberTooShort"));
+        checkAndAddErrorIfNeeded("Phone - format - too long",examEnrollPageStep2.getPhoneValidationMessage(),validationMessages.getString("invalidPhoneLength"));
+        examEnrollPageStep2.setPhone(validationData.getString("phoneNumberInvalidFormat"));
+        checkAndAddErrorIfNeeded("Phone - format",examEnrollPageStep2.getPhoneValidationMessage(),validationMessages.getString("invalidPhoneFormat"));
+    }
+    @Step
+    public void checkCertificateFirstNameValidationForFormatErrors(){
+        examEnrollPageStep3.setCertificateFirstName(validationData.getString("fistNameTooShort"));
+        checkAndAddErrorIfNeeded("First name - format - too short",examEnrollPageStep3.getCertificateFirstNameValidation(),validationMessages.getString("certificateFirstNameFormat"));
+        examEnrollPageStep3.setCertificateFirstName(validationData.getString("fistNameTooLong"));
+        checkAndAddErrorIfNeeded("First name - format - too long",examEnrollPageStep3.getCertificateFirstNameValidation(),validationMessages.getString("certificateFirstNameFormat"));
+    }
+
+    @Step
+    public void checkCertificateLastNameValidationForFormatErrors(){
+        examEnrollPageStep3.setCertificateLastName(validationData.getString("lastNameTooShort"));
+        checkAndAddErrorIfNeeded("Last name - format - too short",examEnrollPageStep3.getCertificateLastNameValidation(),validationMessages.getString("certificateLastNameFormat"));
+        examEnrollPageStep3.setCertificateLastName(validationData.getString("fistNameTooLong"));
+        checkAndAddErrorIfNeeded("Last name - format - too long",examEnrollPageStep3.getCertificateLastNameValidation(),validationMessages.getString("certificateLastNameFormat"));
+    }
+
+    @Step
+    public void checkZipCodeValidationForFormatErrors(){
+        examEnrollPageStep3.setZipCode(validationData.getString("zipCodeInvalidFormat1"));
+        checkAndAddErrorIfNeeded("Zip code - format - too short",examEnrollPageStep3.getZipCodeValidation(),validationMessages.getString("invalidZipCodeFormat"));
+        examEnrollPageStep3.setZipCode(validationData.getString("zipCodeInvalidFormat2"));
+        checkAndAddErrorIfNeeded("Zip code - format - too long",examEnrollPageStep3.getZipCodeValidation(),validationMessages.getString("invalidZipCodeFormat"));
+    }
+
+    @Step
+    public void checkAddressValidationForFormatErrors(){
+        examEnrollPageStep3.setAddress(validationData.getString("addressTooShort"));
+        checkAndAddErrorIfNeeded("Address - format - too short",examEnrollPageStep3.getAddressValidation(),validationMessages.getString("addressFormat"));
+        examEnrollPageStep3.setAddress(validationData.getString("addressTooLong"));
+        checkAndAddErrorIfNeeded("Address - format - too long",examEnrollPageStep3.getAddressValidation(),validationMessages.getString("addressFormat"));
+    }
+
+    @Step
+    public void checkCityValidationForFormatErrors(){
+        examEnrollPageStep3.setCity(validationData.getString("cityTooShort"));
+        checkAndAddErrorIfNeeded("City - format - too short",examEnrollPageStep3.getCityValidation(),validationMessages.getString("cityFormat"));
+        examEnrollPageStep3.setCity(validationData.getString("cityTooLong"));
+        checkAndAddErrorIfNeeded("City - format - too long",examEnrollPageStep3.getCityValidation(),validationMessages.getString("cityFormat"));
     }
 
     @Step
