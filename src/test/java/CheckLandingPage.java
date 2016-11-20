@@ -1,3 +1,5 @@
+import model.EnrollEnums;
+import model.Exam;
 import model.Session;
 import model.SessionBuilder;
 import net.serenitybdd.junit.runners.SerenityRunner;
@@ -9,9 +11,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import pages.AddSessionPage;
 import steps.LandingSteps;
+import steps.LoginSteps;
+import steps.session.AddSessionSteps;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static model.EnrollEnums.EGZAM_PRODUCT.BASIC_ISTQB;
@@ -30,6 +36,12 @@ public class CheckLandingPage {
 
     @Steps
     private LandingSteps steps;
+
+    @Steps
+    private AddSessionSteps addSessionSteps;
+
+    @Steps
+    private LoginSteps loginSteps;
 
     @Before
     public void goToLoginPage() {
@@ -57,7 +69,23 @@ public class CheckLandingPage {
 
     @Test
     public void testId(){
-        steps.clickRegisterIndividualByID("518");
+
+        Session s = SessionBuilder.Instance().withSessionDate(LocalDateTime.of(2016,12,13,12,40)).
+                withManagementMethod(AddSessionPage.ManagementMethod.PRODUCT).
+                withExams(Collections.singletonList(
+                        new Exam(EnrollEnums.EGZAM_LEVEL.ADVANCE, EnrollEnums.EGZAM_PRODUCT.ADVANCED_TEST_ANALYST, "44"))).
+                withLevels(Arrays.asList(EnrollEnums.EGZAM_LEVEL.ADVANCE)).
+                withProducts(Arrays.asList(EnrollEnums.EGZAM_PRODUCT.ADVANCED_TEST_ANALYST))
+                .build();
+
+        loginSteps.shouldLogin();
+        addSessionSteps.shouldCreateSession(s);
+        addSessionSteps.sessionShouldBeCreated();
+        addSessionSteps.shouldActivateExamSession();
+        System.out.println(s.getId().get());
+        
+
+        //steps.clickRegisterIndividualByID("518");
     }
 
 }
