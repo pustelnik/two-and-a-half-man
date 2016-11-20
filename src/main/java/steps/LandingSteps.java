@@ -1,22 +1,21 @@
 package steps;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import org.openqa.selenium.WebElement;
+import pages.AddSessionPage;
 import pages.LandingPage;
 import model.Session;
 import model.EnrollEnums.EGZAM_PRODUCT;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 /**
  * Created by OtrembskiA on 2016-11-17.
  */
 public class LandingSteps extends BaseScenarioSteps{
-    private static final Config CONF = ConfigFactory.load();
     private final LandingPage landingPage = getCurrentPage(LandingPage.class);
 
 
@@ -25,40 +24,91 @@ public class LandingSteps extends BaseScenarioSteps{
     }
 
     @Step
-    public Session chooseRegisterIndividual(Session session, EGZAM_PRODUCT product){
-/*        WebElement examSessionContainer = landingPage.getExamSession(session);
-        assertNotNull("Landing page : Created exam not found on exam list",examSessionContainer);
+    public Session clickRegisterIndividual(Session session, EGZAM_PRODUCT product){
+        WebElement examSessionContainer = landingPage.getExamSession(session);
 
         WebElement registerIndividualBtn = landingPage.getIndividualRegisterButton(examSessionContainer, product);
-        assertNotNull("Landing page : Couldn't find 'Rejestracja indywidualna' button for created exam on exam list",registerIndividualBtn);
 
         registerIndividualBtn.click();
-*/
+
         return session;
     }
 
+    /**
+     * Locating button with give ID and click it.
+     * @param examId an ID of button to click on
+     * @return given ID
+     */
     @Step
-    public String chooseRegisterIndividualByID(String examId){
-        WebElement registerIndividualBtn = landingPage.getIndividualRegisterButtonById(examId);
-        assertNotNull("Landing page : Couldn't find 'Rejestracja indywidualna' button for created exam on exam list",registerIndividualBtn);
+    public String clickRegisterIndividualByID(String examId){
+        WebElement registerIndividualBtn = landingPage.getElementByID(examId);
 
         registerIndividualBtn.click();
 
         return examId;
     }
 
+    /**
+     * Click on register group button of given session.
+     * @param session session for which register button should be found
+     * @return given session
+     */
     @Step
-    public Session chooseRegisterGroup(Session session) {
+    public Session clickRegisterGroup(Session session) {
+        assertTrue("Landing page : Registration not available.",isRegistrationAvailable(session));
         WebElement examSessionContainer = landingPage.getExamSession(session);
-        assertNotNull("Landing page : Created exam not found on exam list",examSessionContainer);
-
-        //click on group register in container
         WebElement registerGroupBtn = landingPage.getGroupRegisterButton(examSessionContainer);
-        assertNotNull("Landing page : Couldn't find 'Rejestracja grupowa' button for created exam on exam list",registerGroupBtn);
 
         registerGroupBtn.click();
 
         return session;
     }
 
+    /**
+     * Assure that number of seats for given session is equal with information on Landing page.
+     * Check for group register ( summary )
+     * @param session - session to verify
+     * @param freeSeats - number of free seats to verify with showed on page session
+     * @return given session
+     */
+    @Step
+    public Session assureSummaryNumberOfFreeSeatsEqualTo(Session session, int freeSeats){
+        //jezeli sesja jest tworzona z miejscami dla produktu
+        return session;
+    }
+
+    /**
+     * Count number of free seats for every product on session and compare to summary value.
+     * @param session - session to verify
+     * @return given session
+     */
+    @Step
+    public Session assertSummaryNumberOfFreeSeatsIsEqualSeatsCount(Session session){
+        assertTrue("Landing page : Summary value of free seats and count of individual seats are different.",landingPage.getCountOfFreeSeats(session) == landingPage.getSummaryFreeSeats(session));
+        return session;
+    }
+
+
+    /**
+     * verify that number od free seats for specific product is equal to given count
+     * @param session - session to check
+     * @param freeSeats - number of seats to verify
+     * @return given session
+     */
+    @Step
+    public Session assureNumberOfFreeSeatsForProduct(Session session, int freeSeats){
+        return session;
+    }
+
+
+    /**
+     * Check if given session is shown on page, and that group register button is available.
+     * @param session - session to check
+     * @return true if registration is available
+     */
+    @Step
+    public boolean isRegistrationAvailable(Session session){
+        WebElement examSessionContainer = landingPage.getExamSession(session);
+        return landingPage.isGroupRegistrationButtonAvailable(examSessionContainer);
+    }
 }

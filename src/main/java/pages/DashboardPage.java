@@ -6,6 +6,8 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.time.LocalDateTime;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -16,6 +18,12 @@ public class DashboardPage extends NavigationBar {
     private WebElement loginLink;
     @FindBy(css = "dropdownMenu-language")
     private WebElementFacade languageDropDown;
+    @FindBy(css = ".fc-prev-button")
+    private WebDriver previousMonth;
+    @FindBy(css = ".fc-next-button")
+    private WebDriver nextMonth;
+    @FindBy(css = ".fc-left")
+    private WebDriver currectMoth;
 
     private enum Language {
         POLISH("Polski"),
@@ -30,6 +38,10 @@ public class DashboardPage extends NavigationBar {
 
     public DashboardPage(WebDriver driver) {
         super(driver);
+    }
+
+    public void deleteSessionsAtDate(LocalDateTime date) {
+        // TODO implement this
     }
 
     public void clickOnLoginLink() {
