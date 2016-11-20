@@ -7,15 +7,14 @@ import model.EnrollEnums.EGZAM_PRODUCT;
 import pages.AddSessionPage.ManagementMethod;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static model.EnrollEnums.EGZAM_LEVEL.BASIC;
 import static model.EnrollEnums.EGZAM_LEVEL.EXPERT;
 import static model.EnrollEnums.EGZAM_PRODUCT.BASIC_ISTQB;
+import static pages.AddSessionPage.ManagementMethod.PRODUCT;
+import static pages.AddSessionPage.ManagementMethod.SESSION;
 
 /**
  * @author jakubp on 16.11.16.
@@ -35,10 +34,11 @@ public class SessionBuilder {
                 "Lodz"+ new Random().nextInt((100-0)+1)+1,
                 "Fabryczna 17",
                 "brak",
-                ManagementMethod.SESSION,
+                SESSION,
                 "10",
                 Arrays.asList(BASIC, EXPERT),
                 Collections.singletonList(BASIC_ISTQB),
+                new ArrayList<>(),
                 "Alan Harper");
     }
 
@@ -50,16 +50,35 @@ public class SessionBuilder {
         }
 
         Config selectedSession = configList.get(session-1);
+        if(ManagementMethod.valueOf(selectedSession.getString("managementMethod")).equals(SESSION)) {
+            return withSessionDate(LocalDateTime.now().plusWeeks(selectedSession.getInt("sessionDate"))).
+                    withPostalCode(selectedSession.getString("postalCode")).
+                    withCity(selectedSession.getString("city")).
+                    withAddress(selectedSession.getString("address")).
+                    withAdditionalInfo(selectedSession.getString("additionalInfo")).
+                    withManagementMethod(SESSION).
+                    withNumberOfSeats(selectedSession.getString("numberOfSeats")).
+                    withLevels(createLevelsList(selectedSession.getStringList("levels"))).
+                    withProducts(createProductList(selectedSession.getStringList("products"))).
+                    withExaminer(selectedSession.getString("examiner"));
+        }
         return withSessionDate(LocalDateTime.now().plusWeeks(selectedSession.getInt("sessionDate"))).
                 withPostalCode(selectedSession.getString("postalCode")).
                 withCity(selectedSession.getString("city")).
                 withAddress(selectedSession.getString("address")).
                 withAdditionalInfo(selectedSession.getString("additionalInfo")).
-                withManagementMethod(ManagementMethod.valueOf(selectedSession.getString("managementMethod"))).
-                withNumberOfSeats(selectedSession.getString("numberOfSeats")).
+                withManagementMethod(PRODUCT).
+                withExams(createExamsList(selectedSession.getConfigList("products"))).
                 withLevels(createLevelsList(selectedSession.getStringList("levels"))).
-                withProducts(createProductList(selectedSession.getStringList("products"))).
                 withExaminer(selectedSession.getString("examiner"));
+    }
+
+    private List<Exam> createExamsList(List<? extends Config> products) {
+        return products.stream().map(product -> new Exam(
+                EGZAM_LEVEL.valueOf(product.getString("level")),
+                EGZAM_PRODUCT.valueOf(product.getString("name")),
+                product.getString("numberOfSeats")))
+                .collect(Collectors.toList());
     }
 
     private List<EGZAM_PRODUCT> createProductList(List<String> products) {
@@ -112,6 +131,11 @@ public class SessionBuilder {
 
     public SessionBuilder withProducts(List<EGZAM_PRODUCT> products) {
         this.session.setProducts(products);
+        return this;
+    }
+
+    public SessionBuilder withExams(List<Exam> exams) {
+        this.session.setExams(exams);
         return this;
     }
 

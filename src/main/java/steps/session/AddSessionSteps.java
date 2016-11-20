@@ -79,9 +79,11 @@ public class AddSessionSteps extends BaseScenarioSteps {
     @Step
     public void shouldSelectSeatsManagement() {
         addSessionPage.selectSeatManagementMethod(session.getManagementMethod());
-        assertThat(addSessionPage.getNumberOfSeats().isVisible()).as("Number is seats input should be visible ").isTrue();
-        addSessionPage.getNumberOfSeats().clear();
-        addSessionPage.getNumberOfSeats().sendKeys(session.getNumberOfSeats());
+        if(session.getManagementMethod().equals(SESSION)) {
+            assertThat(addSessionPage.getNumberOfSeats().isVisible()).as("Number is seats input should be visible ").isTrue();
+            addSessionPage.getNumberOfSeats().clear();
+            addSessionPage.getNumberOfSeats().sendKeys(session.getNumberOfSeats());
+        }
     }
 
     @Step
@@ -95,9 +97,14 @@ public class AddSessionSteps extends BaseScenarioSteps {
     @Step
     public void shouldSelectProducts() {
         addSessionPage.selectProductBtn().click();
-        addSessionPage.selectProduct(session.getProducts());
+        if(session.getManagementMethod().equals(SESSION)) {
+            addSessionPage.selectProduct(session.getProducts());
+            addSessionPage.selectProductBtn().click();
+        } else {
+            addSessionPage.selectProductByExams(session.getExams());
+        }
         // close dropdown menu
-        addSessionPage.selectProductBtn().click();
+
     }
 
     @Step
@@ -193,8 +200,16 @@ public class AddSessionSteps extends BaseScenarioSteps {
         this.session = SessionBuilder.Instance().loadSessionFromConfig(4).build();
     }
 
+    public void setOverMaxSessionSeatsPerProduct() {
+        this.session = SessionBuilder.Instance().loadSessionFromConfig(7).build();
+    }
+
+    public void setOverMinSessionSeatsPerProduct() {
+        this.session = SessionBuilder.Instance().loadSessionFromConfig(8).build();
+    }
+
     public void setMaxProductSeats() {
-        this.session = SessionBuilder.Instance().loadSessionFromConfig(5).build();
+        this.session = SessionBuilder.Instance().loadSessionFromConfig(6).build();
     }
 
     private void setLastSessionId() {

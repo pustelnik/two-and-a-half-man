@@ -24,6 +24,13 @@ public class ExamEnrollSteps extends ExamEnrollBaseSteps {
     }
 
     @Step
+    public void goToIndividualEnrollpage(String individualSessionId){
+        LandingPage landingPage = getCurrentPage((LandingPage.class));
+        landingPage.goToLandingPage();
+        landingPage.getElementByID(individualSessionId).click();
+    }
+
+    @Step
     public void fillFieldsFromStep1(){
         fillEnrollPageStep1();
         assertThat(examEnrollPageStep1.checkIfValidationWasTriggered()).describedAs("One of the fields was not set!").isFalse();
