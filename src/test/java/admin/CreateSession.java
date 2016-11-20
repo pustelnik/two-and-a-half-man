@@ -151,22 +151,38 @@ public class CreateSession {
     }
 
     @Test
-    @Title("Session should not be created for negative number of seats")
+    @Title("Session should not be created for negative number of seats (seats per session)")
     public void sessionShouldNotBeCreatedForNegativeSeatsNumber() {
         Session negativeSeatsSession = SessionBuilder.Instance().
-                withNumberOfSeats("-500").
+                withNumberOfSeats("-1").
                 build();
         steps.shouldCreateSession(negativeSeatsSession);
         steps.shouldNotCreateNewSession();
     }
 
     @Test
-    @Title("Session should not be created for n > 999")
+    @Title("Session should not be created for n > 999 (seats per session)")
     public void sessionShouldNotBeCreatedForBigNumberOfSeats() {
         Session negativeSeatsSession = SessionBuilder.Instance().
                 withNumberOfSeats("1000").
                 build();
         steps.shouldCreateSession(negativeSeatsSession);
+        steps.shouldNotCreateNewSession();
+    }
+
+    @Test
+    @Title("Session should not be created for negative number of seats (seats per product)")
+    public void sessionShouldNotBeCreatedForNegativeSeatsNumberPerProduct() {
+        steps.setOverMinSessionSeatsPerProduct();
+        steps.shouldCreateSession();
+        steps.shouldNotCreateNewSession();
+    }
+
+    @Test
+    @Title("Session should not be created for n > 999 (seats per product)")
+    public void sessionShouldNotBeCreatedForBigNumberOfSeatsPerProduct() {
+        steps.setOverMaxSessionSeatsPerProduct();
+        steps.shouldCreateSession();
         steps.shouldNotCreateNewSession();
     }
 

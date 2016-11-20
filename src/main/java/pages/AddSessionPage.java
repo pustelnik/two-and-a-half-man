@@ -3,9 +3,10 @@ package pages;
 import com.jayway.awaitility.Duration;
 import model.EnrollEnums;
 import model.EnrollEnums.EGZAM_PRODUCT;
+import model.Exam;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
-import org.fest.assertions.Assertions;
+import org.apache.logging.log4j.Logger;
 import org.fluentlenium.core.domain.FluentWebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,9 +16,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.jayway.awaitility.Awaitility.await;
 import static com.jayway.awaitility.Awaitility.waitAtMost;
 import static java.lang.String.format;
+import static org.apache.logging.log4j.LogManager.getLogger;
 import static org.fest.assertions.Assertions.assertThat;
 import static pages.AddSessionPage.ManagementMethod.PRODUCT;
 
@@ -51,8 +52,6 @@ public class AddSessionPage extends NavigationBar {
         PRODUCT, SESSION
     }
 
-
-
     public FluentWebElement sessionDateInput() {
         return fluent().$("#SessionDto_Date").first();
     }
@@ -66,7 +65,7 @@ public class AddSessionPage extends NavigationBar {
         sessionDateInput().text(sessionDate);
         String actualSessionDate = sessionDateInput().getValue();
         waitAtMost(Duration.FIVE_SECONDS).until(() -> sessionDateInput().getValue().equals(sessionDate));
-        Assertions.assertThat(actualSessionDate).as("Session date is not " + dateTime).isEqualTo(sessionDate);
+        assertThat(actualSessionDate).as("Session date is not " + dateTime).isEqualTo(sessionDate);
         return this;
     }
 
@@ -101,8 +100,22 @@ public class AddSessionPage extends NavigationBar {
      * @param products List of products to click on.
      */
     public AddSessionPage selectProduct(List<EGZAM_PRODUCT> products) {
-        products.forEach(product -> clickOnDropDown(product.index, 1));
+        products.forEach(this::clickOnProductDropDown);
         assertThatSelectionNumberMatches(products, selectProductBtn().getAttribute("title"));
+        return this;
+    }
+
+    public AddSessionPage selectProductByExams(List<Exam> exams) {
+        Logger log = getLogger(AddSessionPage.class);
+        for (Exam exam : exams) {
+            // click on product from dropdown
+            log.debug("Clicking on {} product", exam.getProduct().name);
+            clickOnProductDropDown(exam.getProduct());
+        }
+        selectProductBtn().click();
+        for (Exam exam : exams) {
+            setProductSeatsNumber(exam.getNumberOfSeats(), exam.getProduct());
+        }
         return this;
     }
 
@@ -192,10 +205,33 @@ public class AddSessionPage extends NavigationBar {
         btn.click();
     }
 
-    public WebElementFacade seatsNumberInput(int seatsNumber) {
-        WebElementFacade inputBox = find(By.name("SessionDto.SpaceForSession"));
-//        shouldBeVisible(inputBox);
-        inputBox.sendKeys(String.valueOf(seatsNumber));
-        return inputBox;
+    private void clickOnProductDropDown(EGZAM_PRODUCT product) {
+        List<WebElementFacade> elements = findAll(By.cssSelector(".Session-selectBox li[data-original-index]"));
+        for (WebElementFacade webElementFacade : elements) {
+            if(webElementFacade.getTextValue().startsWith(product.name)) {
+                webElementFacade.click();
+                return;
+            }
+        }
+    }
+
+    public AddSessionPage setProductSeatsNumber(String numberOfSeats, EGZAM_PRODUCT product) {
+        WebElementFacade inputBox = getExamProductInputBox(product);
+        shouldBeVisible(inputBox);
+        inputBox.clear();
+        inputBox.sendKeys(numberOfSeats);
+        return this;
+    }
+
+    public WebElementFacade getExamProductInputBox(EGZAM_PRODUCT product) {
+        return find(By.cssSelector("input[name=\"SessionDto.Products["+ product.deleteBtnId +"].CapacityForProductSession\"]"));
+    }
+
+    public AddSessionPage deleteProductFromList(int productInputNumber) {
+        WebElementFacade trashIcon = find(By.cssSelector("span[data-id=\""+ productInputNumber +"\"]"));
+        shouldBeVisible(trashIcon);
+        trashIcon.click();
+        assertThat(trashIcon.isVisible()).as("Product deleted").isFalse();
+        return this;
     }
 }

@@ -1,13 +1,11 @@
 package pages.session;
 
-import model.EnrollEnums;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
-import org.fluentlenium.core.domain.FluentWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static model.EnrollEnums.*;
+import static model.EnrollEnums.EGZAM_PRODUCT;
 
 /**
  * @author jakubp on 17.11.16.
@@ -33,7 +31,4 @@ public class SessionExamsPage extends SessionNavigation {
         editBtn.click();
         return this;
     }
-
-    
-
 }
