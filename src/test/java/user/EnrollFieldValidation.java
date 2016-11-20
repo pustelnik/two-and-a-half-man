@@ -1,5 +1,7 @@
 package user;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.*;
 import net.thucydides.core.pages.Pages;
@@ -11,9 +13,12 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import pages.session.SessionExamsPage;
 import steps.enroll.ExamEnrollSteps;
+import steps.enroll.ExamEnrollValidationSteps;
 import steps.session.AddSessionSteps;
 import tools.RequestBase;
 import tools.SessionRequest;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Created by LewarskiT on 2016-11-17.
@@ -30,6 +35,9 @@ public class EnrollFieldValidation {
     AddSessionSteps addSessionSteps;
 
     @Steps
+    ExamEnrollValidationSteps examEnrollValidationSteps;
+
+    @Steps
     ExamEnrollSteps examEnrollSteps;
 
     @Page
@@ -41,12 +49,12 @@ public class EnrollFieldValidation {
     @Before
     public void createSession(){
 
-        credentialsHolder = examEnrollSteps.loginUsingRequest(driver);
+        credentialsHolder = examEnrollValidationSteps.loginUsingRequest(driver);
         addSessionSteps.setOneExamSession();
         addSessionSteps.shouldCreateSession();
         addSessionSteps.shouldActivateExamSession();
         sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
-        examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
+        examEnrollValidationSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
 
         //System.out.println(addSessionSteps.getSession().getId().get());
         //System.out.println(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
@@ -56,82 +64,44 @@ public class EnrollFieldValidation {
     @Test
     @Title("Check if Exam details(date/location/product/level are displayed correctly")
     public void validateExamDetails(){
-        examEnrollSteps.checkIfExamHeaderIsCorrect(addSessionSteps.getSession());
+        examEnrollValidationSteps.checkIfExamHeaderIsCorrect(addSessionSteps.getSession());
     }
 
     @Test
-    @Title("Check if email field is being validated correctly")
+    @Title("Check if all required fields are set on Step1")
     @Pending
-    public void checkEmailFieldForInvalidInput(){
+    public void checkIfAllRequiredFieldsAreSetOnStep1(){
+        examEnrollValidationSteps.triggerValidation();
+        examEnrollValidationSteps.checkIfStep1ValidateionWorksForRequiredFieldssAWhole();
+        //check individual fields for format errors
 
-        //check lenght
-        //check format
-        //check if correct email is accepted
+        examEnrollValidationSteps.checkForErrors();
     }
 
     @Test
-    @Title("Check if phone numebr is being validated correclty")
+    @Title("Check if all required fields are set on Step2")
     @Pending
-    public void checkPhoneNumberForInvalidInput(){
-        //check lenght
-        //check format
-        //check if correct email is accepted
+    public void checkIfAllRequiredFieldsAreSetOnStep2(){
+        //set
+        examEnrollSteps.setAtendeeModel(1);
+        examEnrollSteps.fillFieldsFromStep1();
+        examEnrollValidationSteps.triggerValidation();
+        examEnrollValidationSteps.checkIfStep2ValidateionWorksForRequiredFieldssAWhole();
+
+        examEnrollValidationSteps.checkForErrors();
     }
 
     @Test
-    @Title("Check if first name from ContactDetails step is being validated correclty")
+    @Title("Check if all required fields are set on Step3")
     @Pending
-    public void checFirstNameInContactDetailsForInvalidInput(){
+    public void checkIfAllRequiredFieldsAreSetOnStep3(){
+        examEnrollSteps.setAtendeeModel(1);
+        examEnrollSteps.fillFieldsFromStep1();
+        examEnrollSteps.fillFieldsFromStep2();
+        examEnrollValidationSteps.triggerValidation();
+        examEnrollValidationSteps.checkIfStep3ValidateionWorksForRequiredFieldssAWhole();
 
-    }
-
-    @Test
-    @Title("Check if last name from ContactDetails step  is being validated correclty")
-    @Pending
-    public void checLastNameInContactDetailsForInvalidInput(){
-
-    }
-
-    @Test
-    @Title("Check if first name from CertificateDetails step is being validated correctly")
-    @Pending
-    public void checFirstNameInCertificateDetailsForInvalidInput(){
-
-    }
-
-    @Test
-    @Title("Check if last name from CertificateDetails step is being validated correctly")
-    @Pending
-    public void checLastNameInCertificateDetailsForInvalidInput(){
-
-    }
-
-    @Test
-    @Title("Check if Zip Code from CertificateDetails step is being validated correctly")
-    @Pending
-    public void checZipCodeInCertificateDetailsForInvalidInput(){
-
-    }
-
-    @Test
-    @Title("Check if City from CertificateDetails step is being validated correctly")
-    @Pending
-    public void checCityInCertificateDetailsForInvalidInput(){
-
-    }
-
-    @Test
-    @Title("Check if Invoice Setting from CertificateDetails step is being validated correctly")
-    @Pending
-    public void checInvoiceInCertificateDetailsForInvalidInput(){
-
-    }
-
-    @Test
-    @Title("Check if Legal Policy Setting from CertificateDetails step is being validated correctly")
-    @Pending
-    public void checIfLegalPolicySettingIsBeingValidated(){
-
+        examEnrollValidationSteps.checkForErrors();
     }
 
     @After

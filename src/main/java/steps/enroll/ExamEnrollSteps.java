@@ -18,33 +18,9 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  * Created by LewarskiT on 2016-11-17.
  */
-public class ExamEnrollSteps extends BaseScenarioSteps {
-    private AtendeeModel atendeeModel;
-    
-    private LandingPage landingPage = getCurrentPage(LandingPage.class);
-    private final ExamEnrollPageBase examEnrollPageBase = getCurrentPage(ExamEnrollPageBase.class);
-    private ExamEnrollPageStep1 examEnrollPageStep1 = getCurrentPage(ExamEnrollPageStep1.class);
-    private ExamEnrollPageStep2 examEnrollPageStep2 = getCurrentPage(ExamEnrollPageStep2.class);
-    private ExamEnrollPageStep3 examEnrollPageStep3 = getCurrentPage(ExamEnrollPageStep3.class);
-    private ExamEnrollPageConfirmation examEnrollPageConfirmation = getCurrentPage(ExamEnrollPageConfirmation.class);
-
+public class ExamEnrollSteps extends ExamEnrollBaseSteps {
     public ExamEnrollSteps(Pages pages) {
         super(pages);        
-    }
-    
-    public void setAtendeeModel(int attendeeID){
-        atendeeModel = new AtendeeModel(attendeeID);
-    }
-    
-    public void clearAtendeeModel(){
-        atendeeModel = null;
-    }
-
-    @Step
-    public void goToIndividualEnrollpage(String individualSessionId){
-        LandingPage landingPage = getCurrentPage((LandingPage.class));
-        landingPage.goToLandingPage();
-        landingPage.getIndividualRegisterButtonById(individualSessionId).click();
     }
 
     @Step
@@ -78,23 +54,6 @@ public class ExamEnrollSteps extends BaseScenarioSteps {
         assertThat(examEnrollPageConfirmation.isConfirmationVisible()).describedAs("Confirmation is not visible").isTrue();
         assertThat(examEnrollPageConfirmation.getConfirmationMessage()).describedAs("Confirmation message is wrong").
                 isEqualTo(ConfigFactory.load().getConfig("test.messages.enrollPage").getString("enrollConfirmation"));
-    }
-
-    @Step
-    public void checkIfExamHeaderIsCorrect(Session sessionObject){
-        assertThat(examEnrollPageBase.checkIfExamHeaderContainsGivenDetails(sessionObject.getCity()))
-                .describedAs("Exam city must be wrong").isTrue();
-        LocalDateTime sessionDate = sessionObject.getSessionDate();
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm");
-        DateTimeFormatter day = DateTimeFormatter.ofPattern("c MMM").withLocale(new Locale("pl","PL"));
-
-        assertThat(examEnrollPageBase.checkIfExamHeaderContainsGivenDetails(sessionDate.format(time)))
-                .describedAs("Exam date must be wrong").isTrue();
-        assertThat(examEnrollPageBase.checkIfExamHeaderContainsGivenDetails(sessionDate.format(day)))
-                .describedAs("Exam time must be wrong").isTrue();
-
-        assertThat(examEnrollPageBase.checkIfExamHeaderContainsGivenDetails(sessionObject.getProducts().get(0).name))
-                .describedAs("Exam title must be wrong").isTrue();
     }
     
     private void fillEnrollPageStep1(){
