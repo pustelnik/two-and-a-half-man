@@ -91,22 +91,25 @@ public class LandingPage extends BasePage{
         //i jezeli tak to zwracam buton z tego wiersza
 
         try {
-            WebElement examsTable = examSessionContainer.findElement(By.cssSelector(".table.Agenda-tabledsd"));
+            WebElement examsTable = examSessionContainer.findElement(By.cssSelector(".table.Agenda-table"));
+            List<WebElement> examRow = examsTable.findElements(By.cssSelector("tr"));
+            for(WebElement row : examRow){
+                System.out.println(row.getText());
+                WebElement productName = row.findElement(By.cssSelector(".Agenda-textColumn--levelName"));
+            }
         }catch(NoSuchElementException e){
-            return null;
+            assertNotNull("Landing page : Couldn't find 'Rejestracja indywidualna' button for created exam on exam list",null);
         }
-        WebElement examsTable = examSessionContainer.findElement(By.cssSelector(".table.Agenda-tabledsd"));
-        List<WebElement> examRow = examsTable.findElements(By.cssSelector("tr"));
-        for(WebElement row : examRow){
-            System.out.println(row.getText());
-            WebElement productName = row.findElement(By.cssSelector(".Agenda-textColumn--levelName"));
-        }
-
         return null;
     }
 
     public WebElement getIndividualRegisterButtonById(String examId){
-        return  getDriver().findElement(By.cssSelector("td[data-productsessionid='"+examId+"']"));
+        try {
+            return getDriver().findElement(By.cssSelector("td[data-productsessionid='" + examId + "']"));
+        }catch(NoSuchElementException e){
+            assertNotNull("Landing page : Couldn't find 'Rejestracja indywidualna' button for created exam on exam list",null);
+            return null;
+        }
     }
 
 
@@ -115,6 +118,7 @@ public class LandingPage extends BasePage{
             WebElement registerGroupBtn = examSessionContainer.findElement(By.cssSelector(".Agenda-groupBtnContainer.btn"));
             return registerGroupBtn;
         }catch(NoSuchElementException e){
+            assertNotNull("Landing page : Couldn't find 'Rejestracja grupowa' button for created exam on exam list",null);
             return null;
         }
     }
@@ -141,8 +145,13 @@ public class LandingPage extends BasePage{
 
     private LocalTime getAgendaHour(WebElement agendaSession){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-        WebElement hourSpan = agendaSession.findElement(By.cssSelector(".Agenda-hourSpan"));
-        return LocalTime.parse(hourSpan.getText(), dtf);
+        try {
+            WebElement hourSpan = agendaSession.findElement(By.cssSelector(".Agenda-hourSpan"));
+            return LocalTime.parse(hourSpan.getText(), dtf);
+        }catch(NoSuchElementException e){
+            assertNotNull("Landing page : No agenda time information found on page.", null);
+            return null;
+        }
     }
 
 
@@ -165,10 +174,13 @@ public class LandingPage extends BasePage{
 
 
     private boolean isAgendaWithDayAndPlaceOfExam(WebElement examAgenda, String examCity, LocalDate examDate){
-        String agendaDateRow = examAgenda.findElement(By.cssSelector(".row.Agenda-dateRow")).getText();
-
-        if(!examCity.equals(extractExamPlaceFromAgendaText(agendaDateRow)) || !examDate.equals(extractExamDateFromAgendaText(agendaDateRow)) ){
-            return false;
+        try {
+            String agendaDateRow = examAgenda.findElement(By.cssSelector(".row.Agenda-dateRow")).getText();
+            if(!examCity.equals(extractExamPlaceFromAgendaText(agendaDateRow)) || !examDate.equals(extractExamDateFromAgendaText(agendaDateRow)) ){
+                return false;
+            }
+        }catch(NoSuchElementException e){
+            assertNotNull("Landing page : No exam agenda found on page.", null);
         }
         return true;
     }

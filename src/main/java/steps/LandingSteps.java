@@ -40,7 +40,6 @@ public class LandingSteps extends BaseScenarioSteps{
     @Step
     public String chooseRegisterIndividualByID(String examId){
         WebElement registerIndividualBtn = landingPage.getIndividualRegisterButtonById(examId);
-        assertNotNull("Landing page : Couldn't find 'Rejestracja indywidualna' button for created exam on exam list",registerIndividualBtn);
 
         registerIndividualBtn.click();
 
@@ -54,7 +53,6 @@ public class LandingSteps extends BaseScenarioSteps{
 
         //click on group register in container
         WebElement registerGroupBtn = landingPage.getGroupRegisterButton(examSessionContainer);
-        assertNotNull("Landing page : Couldn't find 'Rejestracja grupowa' button for created exam on exam list",registerGroupBtn);
 
         registerGroupBtn.click();
 
