@@ -70,7 +70,7 @@ public class LandingSteps extends BaseScenarioSteps{
      * @return true if session is available in agenda
      */
     @Step
-    public boolean isSessionAvailableOnAgenda(Session session){
+    public boolean isSessionCorrectlyShowedOnAgenda(Session session){
         if(!isGroupRegistrationAvailable(session)){
             return false;
         }
@@ -81,6 +81,33 @@ public class LandingSteps extends BaseScenarioSteps{
         }
     return true;
     }
+
+
+    @Step
+    public boolean isRegisterGroupButtonAvailable(Session sesison){
+        return isGroupRegistrationAvailable(sesison);
+    }
+
+    @Step
+    public boolean isRegisterIndividualAvailable(Session session){
+        for(EnrollEnums.EGZAM_PRODUCT product : session.getProducts()) {
+            if(!isIndividualRegistrationAvailable(session, product)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if given session container is showed on Agenda(Landing) page.
+     * @param session - session to check
+     * @return true if session is available in agenda
+     */
+    @Step
+    public boolean isSessionContainerShowedOnAgenda(Session session){
+        return landingPage.isExamSessionOnAgenda(session);
+    }
+
 
     /**
      * Click on register group button of given session.

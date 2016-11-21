@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
-import pages.session.SessionExamsPage;
 import steps.LandingSteps;
 import steps.LoginSteps;
 import steps.session.AddSessionSteps;
@@ -22,6 +21,7 @@ import tools.SessionRequest;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author jakubp on 16.11.16.
@@ -203,7 +203,6 @@ public class CreateSession {
                 SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).plusMinutes(10).withNano(0).withSecond(0)).build()
         };
 
-        loginSteps.shouldLogin();
         for(Session session : sessions){
             steps.shouldCreateSession(session);
             steps.sessionShouldBeCreated();
@@ -216,7 +215,9 @@ public class CreateSession {
         }
 
         for(Session session : sessions){
-            steps.sessionDeleteRequest(session.getId().get());
+            if(session.getId().isPresent()) {
+                steps.sessionDeleteRequest(session.getId().get());
+            }
         }
     }
 
@@ -228,7 +229,6 @@ public class CreateSession {
                 SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).plusDays(1).withNano(0).withSecond(0)).build()
         };
 
-        loginSteps.shouldLogin();
         for(Session session : sessions){
             steps.shouldCreateSession(session);
             steps.sessionShouldBeCreated();
@@ -241,7 +241,9 @@ public class CreateSession {
         }
 
         for(Session session : sessions){
-            steps.sessionDeleteRequest(session.getId().get());
+            if(session.getId().isPresent()) {
+                steps.sessionDeleteRequest(session.getId().get());
+            }
         }
     }
 
@@ -257,21 +259,46 @@ public class CreateSession {
         steps.shouldCreateSession();
     }
 
-    //1.utworzenie sesji bez aktywacji - sprawdzic czy nie ma jej na agendzie
     @Test
     public void createSessionWithoutActivationAndCheckShouldBeMissingInAgenda(){
         Session session = SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build();
         steps.shouldCreateSession(session);
         steps.sessionShouldBeCreated();
         landingSteps.goToLandingPage();
-        assertFalse("Session without activation should not be present on Agenda(Landing) page.",landingSteps.isSessionAvailableOnAgenda(session));
+        assertFalse("Session without activation should not be present on Agenda(Landing) page.",landingSteps.isSessionCorrectlyShowedOnAgenda(session));
 
-        steps.sessionDeleteRequest(session.getId().get());
+        if(session.getId().isPresent()) {
+            steps.sessionDeleteRequest(session.getId().get());
+        }
     }
 
-    //2. utworzenie sesji i aktywacja, sprawdzic czy jest w agendzie
-    //3. utworzenie sesji na zero miejsc i aktyawcja
+    @Test
+    public void createSessionWithActivationAndCheckIsShownOnAgenda(){
+        Session session = SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build();
+        steps.shouldCreateSession(session);
+        steps.sessionShouldBeCreated();
+        landingSteps.goToLandingPage();
+        landingSteps.assertSessionIsCorrectlyShowed(session);
+        if(session.getId().isPresent()) {
+            steps.sessionDeleteRequest(session.getId().get());
+        }
+    }
 
+    @Test
+    public void createSessionWithZeroSeatsShouldBeUnavailableToRegister(){
+        Session session = SessionBuilder.Instance().loadSessionFromConfig(1).withNumberOfSeats("0").withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build();
+        steps.shouldCreateSession(session);
+        steps.sessionShouldBeCreated();
+        landingSteps.goToLandingPage();
+        assertTrue("Session is not visible on Agenda(Landing) page.",landingSteps.isSessionContainerShowedOnAgenda(session));
+        assertFalse("'Rejestracja grupowa' button should not be present", landingSteps.isRegisterGroupButtonAvailable(session));
+        assertFalse("'Rejestracja indywidualna' button should not be present", landingSteps.isRegisterIndividualAvailable(session));
+
+        if(session.getId().isPresent()) {
+            steps.sessionDeleteRequest(session.getId().get());
+        }
+
+    }
     @After
     public void cleanUpSession() {
         steps.sessionDeleteRequest();
