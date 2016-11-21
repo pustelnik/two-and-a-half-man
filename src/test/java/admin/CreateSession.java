@@ -265,6 +265,8 @@ public class CreateSession {
         steps.sessionShouldBeCreated();
         landingSteps.goToLandingPage();
         assertFalse("Session without activation should not be present on Agenda(Landing) page.",landingSteps.isSessionAvailableOnAgenda(session));
+
+        steps.sessionDeleteRequest(session.getId().get());
     }
 
     //2. utworzenie sesji i aktywacja, sprawdzic czy jest w agendzie
