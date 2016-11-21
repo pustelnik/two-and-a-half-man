@@ -215,7 +215,9 @@ public class CreateSession {
         }
 
         for(Session session : sessions){
-            steps.sessionDeleteRequest(session.getId().get());
+            if(session.getId().isPresent()) {
+                steps.sessionDeleteRequest(session.getId().get());
+            }
         }
     }
 
@@ -239,7 +241,9 @@ public class CreateSession {
         }
 
         for(Session session : sessions){
-            steps.sessionDeleteRequest(session.getId().get());
+            if(session.getId().isPresent()) {
+                steps.sessionDeleteRequest(session.getId().get());
+            }
         }
     }
 
