@@ -21,6 +21,8 @@ import tools.SessionRequest;
 
 import java.time.LocalDateTime;
 
+import static org.junit.Assert.assertFalse;
+
 /**
  * @author jakubp on 16.11.16.
  */
@@ -254,6 +256,22 @@ public class CreateSession {
         steps.goToSessioNDetailsPage();
         steps.shouldCreateSession();
     }
+
+    //1.utworzenie sesji bez aktywacji - sprawdzic czy nie ma jej na agendzie
+    @Test
+    public void createSessionWithoutActivationAndCheckShouldBeMissingInAgenda(){
+        Session session = SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build();
+        loginSteps.shouldLogin();
+        steps.shouldCreateSession(session);
+        steps.sessionShouldBeCreated();
+        //steps.shouldActivateExamSession();
+
+        landingSteps.goToLandingPage();
+        assertFalse("Session without activation should not be present on Agenda(Landing) page.",landingSteps.isSessionAvailableOnAgenda(session));
+    }
+
+    //2. utworzenie sesji i aktywacja, sprawdzic czy jest w agendzie
+    //3. utworzenie sesji na zero miejsc i aktyawcja
 
     @After
     public void cleanUpSession() {
