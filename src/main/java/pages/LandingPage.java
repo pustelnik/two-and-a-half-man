@@ -35,6 +35,8 @@ public class LandingPage extends BasePage{
     private WebElement loginLink;
     @FindBy(css = "dropdownMenu-language")
     private WebElementFacade languageDropDown;
+    @FindBy(css = ".LandingPage-registerBtn")
+    private WebElement registerSessionBtn;
 
 
     public enum Language {
