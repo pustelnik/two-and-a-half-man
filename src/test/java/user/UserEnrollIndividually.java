@@ -46,13 +46,13 @@ public class UserEnrollIndividually {
         addSessionSteps.shouldActivateExamSession();
         sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
         examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
+        examEnrollSteps.logout(driver);
     }
 
     @Test
     @Title("Try to enroll on an egzam session while not being logged in")
     public void enrollAsUnregisteredUser(){
         examEnrollSteps.setAtendeeModel(1);
-        examEnrollSteps.goToIndividualEnrollpage("464");
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2();
         examEnrollSteps.fillFieldsFromStep3();
@@ -66,7 +66,6 @@ public class UserEnrollIndividually {
         examEnrollSteps.loginUsingRequest(driver);
 
         examEnrollSteps.setAtendeeModel(2);
-        examEnrollSteps.goToIndividualEnrollpage("464");
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2();
         examEnrollSteps.fillFieldsFromStep3();

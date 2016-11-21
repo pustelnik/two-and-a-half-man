@@ -13,9 +13,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import pages.session.SessionExamsPage;
 import steps.LandingSteps;
 import steps.LoginSteps;
 import steps.session.AddSessionSteps;
+import tools.SessionRequest;
 
 import java.time.LocalDateTime;
 
@@ -41,6 +43,7 @@ public class CreateSession {
 
     @Steps
     private AddSessionSteps steps;
+
 
     @Before
     public void login() {
@@ -243,6 +246,17 @@ public class CreateSession {
     }
 
 
+    @Test
+    public void tryToRemoveSessionWhileNotLogged(){
+        shouldCreateSession();
+
+        SessionRequest sessionRequest = new SessionRequest();
+        sessionRequest.deleteSession(steps.getSession().getId().get());
+
+        steps.goToSessioNDetailsPage();
+        steps.shouldCreateSession();
+    }
+
     //1.utworzenie sesji bez aktywacji - sprawdzic czy nie ma jej na agendzie
     @Test
     public void createSessionWithoutActivationAndCheckShouldBeMissingInAgenda(){
@@ -257,8 +271,7 @@ public class CreateSession {
     }
 
     //2. utworzenie sesji i aktywacja, sprawdzic czy jest w agendzie
-    //3. utworzenie sesji na zero miejsc i aktyawcja, sprawdzic ze nie mozna sie zapisac
-
+    //3. utworzenie sesji na zero miejsc i aktyawcja
 
     @After
     public void cleanUpSession() {

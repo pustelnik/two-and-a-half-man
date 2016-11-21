@@ -49,9 +49,13 @@ public class BaseScenarioSteps extends ScenarioSteps {
         goToDashboardPage();
         return loginRequest;
     }
-    
+
     @Step
-    public void feedCookiesToTheDriver(WebDriver driver, List<Cookie> cookies) {
+    public void logout(WebDriver driver){
+        removeCookiesFromTheDriver(driver);
+    }
+
+    private void feedCookiesToTheDriver(WebDriver driver, List<Cookie> cookies) {
         for (Cookie cookie : cookies) {
             driver.manage().addCookie(new org.openqa.selenium.Cookie(
                     cookie.getName(),
@@ -59,5 +63,9 @@ public class BaseScenarioSteps extends ScenarioSteps {
                     cookie.getPath()
             ));
         }
+    }
+
+    private void removeCookiesFromTheDriver(WebDriver driver) {
+        driver.manage().deleteAllCookies();
     }
 }
