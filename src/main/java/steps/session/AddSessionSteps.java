@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import pages.AddSessionPage;
 import pages.DashboardPage;
 import pages.session.SessionDetailsPage;
+import pages.session.SessionExamsPage;
 import pages.session.SessionNavigation;
 import steps.BaseScenarioSteps;
 import tools.RequestBase;
@@ -30,6 +31,7 @@ public class AddSessionSteps extends BaseScenarioSteps {
     private AddSessionPage addSessionPage = getCurrentPage(AddSessionPage.class);
     private DashboardPage dashboardPage = getCurrentPage(DashboardPage.class);
     private SessionDetailsPage sessionDetailsPage = getCurrentPage(SessionDetailsPage.class);
+    private SessionExamsPage sessionExamsPage = getCurrentPage(SessionExamsPage.class);
     private Session session = SessionBuilder.Instance().build();
     private Optional<Session> sessionCopy = Optional.empty();
 
@@ -172,6 +174,30 @@ public class AddSessionSteps extends BaseScenarioSteps {
         SessionRequest sessionRequest = new SessionRequest(requestBase.getCookieStore());
         LOGGER.debug("Sending DELETE session " + sessionId);
         sessionRequest.deleteSession(sessionId);
+    }
+
+    @Step
+    public void createActiveSession(){
+        setOneExamSession();
+        shouldCreateSession();
+        shouldActivateExamSession();
+    }
+
+    @Step
+    public void createInactiveSession(){
+        setOneExamSession();
+        shouldCreateSession();
+    }
+
+    @Step
+    public void goToSessioNDetailsPage(){
+        sessionExamsPage.openSessionExamsPage(getSession().getId().get());
+    }
+
+    @Step
+    public String getExamSessionPageId(){
+        sessionExamsPage.openSessionExamsPage(getSession().getId().get());
+        return sessionExamsPage.getExamToSession(getSession().getProducts().get(0));
     }
 
     @Step
