@@ -68,7 +68,6 @@ public class BasePage extends PageObject {
     public void reload(){
         switchToFirstWindow();
         PageFactory.initElements(getDriver(), this);
-        decorateElement(find(By.cssSelector("body")));
     }
 
 }

@@ -4,6 +4,7 @@ import model.AtendeeModel;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import pages.LandingPage;
+import pages.applications.ApplicationsPage;
 import pages.enroll.*;
 import steps.BaseScenarioSteps;
 
@@ -18,6 +19,7 @@ public class ExamEnrollBaseSteps extends BaseScenarioSteps {
     protected ExamEnrollPageStep2 examEnrollPageStep2 = getCurrentPage(ExamEnrollPageStep2.class);
     protected ExamEnrollPageStep3 examEnrollPageStep3 = getCurrentPage(ExamEnrollPageStep3.class);
     protected ExamEnrollPageConfirmation examEnrollPageConfirmation = getCurrentPage(ExamEnrollPageConfirmation.class);
+    protected ApplicationsPage applicationsPage = getCurrentPage(ApplicationsPage.class);
 
     public ExamEnrollBaseSteps(Pages pages) {
         super(pages);

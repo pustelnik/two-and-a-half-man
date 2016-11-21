@@ -24,7 +24,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class ExamEnrollValidationSteps extends ExamEnrollBaseSteps {
     private Config validationMessages = ConfigFactory.load().getConfig("test.messages.enrollPage");
-    private Config validationData = ConfigFactory.load().getConfig("test.enrollValidation");
+    private Config validationData = ConfigFactory.load().getConfig("test.enrollValidationData");
     private Map<String,String> foundErrors = new HashMap<>();
     public ExamEnrollValidationSteps(Pages pages) {
         super(pages);

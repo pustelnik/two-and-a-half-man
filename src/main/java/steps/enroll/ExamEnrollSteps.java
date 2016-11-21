@@ -54,6 +54,11 @@ public class ExamEnrollSteps extends ExamEnrollBaseSteps {
         assertThat(examEnrollPageConfirmation.getConfirmationMessage()).describedAs("Confirmation message is wrong").
                 isEqualTo(ConfigFactory.load().getConfig("test.messages.enrollPage").getString("enrollConfirmation"));
     }
+
+    @Step
+    public void deleteAllEnrollments(){
+        applicationsPage.deleteAllApplications();
+    }
     
     private void fillEnrollPageStep1(){
         examEnrollPageStep1.reload();

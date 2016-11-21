@@ -50,8 +50,6 @@ public class EnrollFieldValidation {
     public void createSession(){
         credentialsHolder = examEnrollValidationSteps.loginUsingRequest(driver);
         addSessionSteps.createActiveSession();
-        addSessionSteps.getExamSessionPageId();
-
         examEnrollValidationSteps.goToIndividualEnrollpage(addSessionSteps.getExamSessionPageId());
     }
 
@@ -76,7 +74,6 @@ public class EnrollFieldValidation {
 
     @Test
     @Title("Check if all required fields are set on Step2")
-    @Pending
     public void checkIfAllRequiredFieldsAreSetOnStep2(){
         //set
         examEnrollSteps.setAtendeeModel(1);
@@ -95,7 +92,6 @@ public class EnrollFieldValidation {
 
     @Test
     @Title("Check if all required fields are set on Step3")
-    @Pending
     public void checkIfAllRequiredFieldsAreSetOnStep3(){
         examEnrollSteps.setAtendeeModel(1);
         examEnrollSteps.fillFieldsFromStep1();

@@ -41,10 +41,7 @@ public class UserEnrollIndividually {
     @Before
     public void prepareEgzamSession(){
         credentialsHolder = examEnrollSteps.loginUsingRequest(driver);
-        addSessionSteps.setOneExamSession();
-        addSessionSteps.shouldCreateSession();
-        addSessionSteps.shouldActivateExamSession();
-        sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
+        addSessionSteps.createActiveSession();
         examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
         examEnrollSteps.logout(driver);
     }
@@ -77,7 +74,7 @@ public class UserEnrollIndividually {
     public void enrollSameUserTwice(){
         enrollAsUnregisteredUser();
         //start adding user for the second time
-        examEnrollSteps.goToIndividualEnrollpage("464");
+        examEnrollSteps.goToIndividualEnrollpage(addSessionSteps.getExamSessionPageId());
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2AndCheckForDuplicateEmailMessage();
     }
@@ -115,8 +112,7 @@ public class UserEnrollIndividually {
 
     @After
     public void removeEgzamSession(){
-        //delete egzam session
-        //do it once for whole TS
+        examEnrollSteps.deleteAllEnrollments();
         examEnrollSteps.clearAtendeeModel();
     }
 }
