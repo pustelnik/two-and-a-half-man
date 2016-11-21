@@ -33,11 +33,11 @@ public class SessionNavigation extends NavigationBar {
     }
 
     public enum SessionStateChange {
-        ACTIVATE_SESSION(1),
-        FORWARDED_ATTENDERS_INFO(2),
-        EXAMINER_PROTOCOL(3),
-        INVOICES_ISSUED(4),
-        NO_ADDICTIONAL_ACTIONS_ALLOWED(5);
+        ACTIVATE_SESSION(2),
+        FORWARDED_ATTENDERS_INFO(4),
+        EXAMINER_PROTOCOL(8),
+        INVOICES_ISSUED(16),
+        NO_ADDICTIONAL_ACTIONS_ALLOWED(32);
 
         final int index;
 
@@ -89,12 +89,12 @@ public class SessionNavigation extends NavigationBar {
     }
 
     public SessionNavigation changeSessionState(SessionStateChange state, boolean acceptChange) {
-        WebElementFacade checkBox = find(By.xpath(String.format("(//input[@type='checkbox'])[%d]", state.index)));
-        shouldBeVisible(checkBox);
+        WebElementFacade checkBox = find(By.id("status"+state.index));
+        // shouldBeVisible(checkBox);
         checkBox.click();
         waitFor(alertIsPresent());
         clickOnAlert(acceptChange);
-        shouldBeSelected(checkBox);
+        // shouldBeSelected(checkBox);
         return this;
     }
 
