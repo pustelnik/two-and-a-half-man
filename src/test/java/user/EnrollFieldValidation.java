@@ -56,9 +56,6 @@ public class EnrollFieldValidation {
         sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
         examEnrollValidationSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
 
-        //System.out.println(addSessionSteps.getSession().getId().get());
-        //System.out.println(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
-
     }
 
     @Test
@@ -69,11 +66,13 @@ public class EnrollFieldValidation {
 
     @Test
     @Title("Check if all required fields are set on Step1")
-    @Pending
     public void checkIfAllRequiredFieldsAreSetOnStep1(){
         examEnrollValidationSteps.triggerValidation();
+        //required fields
         examEnrollValidationSteps.checkIfStep1ValidateionWorksForRequiredFieldssAWhole();
         //check individual fields for format errors
+        examEnrollValidationSteps.checkCertificateNumberValidationForFormatErrors();
+        examEnrollValidationSteps.checkCertificateIssuedByValidationForFormatErrors();
 
         examEnrollValidationSteps.checkForErrors();
     }
@@ -86,7 +85,13 @@ public class EnrollFieldValidation {
         examEnrollSteps.setAtendeeModel(1);
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollValidationSteps.triggerValidation();
+        //required fields
         examEnrollValidationSteps.checkIfStep2ValidateionWorksForRequiredFieldssAWhole();
+        //check individual fields for format errors
+        examEnrollValidationSteps.checkFirstNameValidationForFormatErrors();
+        examEnrollValidationSteps.checkLastNameValidationForFormatErrors();
+        examEnrollValidationSteps.checkEmailValidationForFormatErrors();
+        examEnrollValidationSteps.checkPhoneValidationForFormatErrors();
 
         examEnrollValidationSteps.checkForErrors();
     }
@@ -98,8 +103,15 @@ public class EnrollFieldValidation {
         examEnrollSteps.setAtendeeModel(1);
         examEnrollSteps.fillFieldsFromStep1();
         examEnrollSteps.fillFieldsFromStep2();
+        //required fields
         examEnrollValidationSteps.triggerValidation();
         examEnrollValidationSteps.checkIfStep3ValidateionWorksForRequiredFieldssAWhole();
+        //format fields
+        examEnrollValidationSteps.checkCertificateFirstNameValidationForFormatErrors();
+        examEnrollValidationSteps.checkCertificateLastNameValidationForFormatErrors();
+        examEnrollValidationSteps.checkZipCodeValidationForFormatErrors();
+        examEnrollValidationSteps.checkAddressValidationForFormatErrors();
+        examEnrollValidationSteps.checkCityValidationForFormatErrors();
 
         examEnrollValidationSteps.checkForErrors();
     }

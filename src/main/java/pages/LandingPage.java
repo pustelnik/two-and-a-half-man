@@ -72,12 +72,6 @@ public class LandingPage extends BasePage{
 
 
 
-    public boolean isIndividualRegistrationAvailable(Session session, EGZAM_PRODUCT product){
-        return false;
-    }
-
-
-
     public WebElement getIndividualRegisterButton(WebElement examSessionContainer, EGZAM_PRODUCT product){
 
         for(WebElement row : getExamsTableRows(examSessionContainer)){
@@ -88,16 +82,16 @@ public class LandingPage extends BasePage{
                 return getProductRegisterBtnFromExamsTableRow(row);
             }
         }
-        assertNotNull("Landing page : Couldn't find 'Rejestracja indywidualna' button for created exam on exam list",null);
+        assertNotNull("Landing page : Couldn't find 'Rejestracja indywidualna' button for created exam on exam list", null);
         return null;
     }
 
 
-    public WebElement getElementByID(String examId){
+    public WebElement getIndividualRegisterButtonById(String examId){
         try {
             return getDriver().findElement(By.cssSelector("td[data-productsessionid='" + examId + "']"));
         }catch(NoSuchElementException e){}
-        assertNotNull("Landing page : Couldn't find element with specified ID="+examId,null);
+        assertNotNull("Landing page : Couldn't find element with specified ID=" + examId, null);
         return null;
     }
 
@@ -111,17 +105,28 @@ public class LandingPage extends BasePage{
         }
     }
 
-    public boolean isGroupRegistrationButtonAvailable(WebElement examSessionContainer){
+
+
+    public boolean isGroupRegistrationButtonAvailable(Session session){
         try {
-            examSessionContainer.findElement(By.cssSelector(".Agenda-groupBtnContainer.btn"));
-            return true;
+            if(null==getExamSession(session).findElement(By.cssSelector(".Agenda-groupBtnContainer.btn")).getAttribute("disabled")){
+                return true;
+            }
         }catch(NoSuchElementException e){
             assertNotNull("Landing page : Couldn't find 'Rejestracja grupowa' button for created exam on exam list",null);
-            return false;
         }
-
+        return false;
     }
 
+
+
+    public boolean isIndividualRegistrationButtonAvailable(Session session, EGZAM_PRODUCT product){
+
+        if(null == getIndividualRegisterButton(getExamSession(session), product).getAttribute("disabled")){
+            return true;
+        }
+        return false;
+    }
 
     public WebElement getExamSession(Session session){
         List<WebElement> agendaSessions = getExamDayContainer(session).findElements(By.cssSelector(".Agenda-dateContentContainer.row"));
@@ -135,9 +140,9 @@ public class LandingPage extends BasePage{
     }
 
 
-    public int getSummaryFreeSeats(Session session){
+    public int getGroupRegisterFreeSeats(Session session){
         WebElement examsContainer = getExamSession(session);
-        int count = extractSummarySeats(examsContainer);
+        int count = extractGroupRegisterSeats(examsContainer);
         return count;
     }
 
@@ -157,7 +162,7 @@ public class LandingPage extends BasePage{
     }
 
 
-    private int extractSummarySeats(WebElement examsContainer){
+    private int extractGroupRegisterSeats(WebElement examsContainer){
         try {
             WebElement element = examsContainer.findElement(By.cssSelector(".Agenda-groupFreePlaces"));
             String value = element.getText().substring(element.getText().lastIndexOf(" "));
@@ -213,8 +218,8 @@ public class LandingPage extends BasePage{
             return tableRow.findElement(By.cssSelector(".btn.js-individual"));
         }catch(NoSuchElementException e){
             assertNotNull("Landing page : Incorrect exams table structure. Register button not found", null);
+            return null;
         }
-        return null;
     }
 
 

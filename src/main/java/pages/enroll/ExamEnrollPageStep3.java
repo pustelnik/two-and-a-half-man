@@ -102,6 +102,38 @@ public class ExamEnrollPageStep3 extends ExamEnrollPageBase {
         }
     }
 
+    public String getCertificateFirstNameValidation() {
+        return getValidationMessage(certificateFirstNameValidation);
+    }
+
+    public String getCertificateLastNameValidation() {
+        return getValidationMessage(certificateLastNameValidation);
+    }
+
+    public String getZipCodeValidation() {
+        return getValidationMessage(zipCodeValidation);
+    }
+
+    public String getCityValidation() {
+        return getValidationMessage(cityValidation);
+    }
+
+    public String getAddressValidation() {
+        return getValidationMessage(addressValidation);
+    }
+
+    public String getAdditionalDetailsValidation() {
+        return getValidationMessage(additionalDetailsValidation);
+    }
+
+    public String getInvoiceTypeValidation() {
+        return getValidationMessage(invoiceTypeValidation);
+    }
+
+    public String getLegalPolicyValidation() {
+        return getValidationMessage(legalPolicyValidation);
+    }
+
     public void goToStep3() {
         previousButton.click();
     }

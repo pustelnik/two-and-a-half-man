@@ -29,7 +29,7 @@ public class SessionBuilder {
 
     private SessionBuilder() {
         session = new Session(
-                LocalDateTime.now().plusWeeks(1).plusMinutes(1),
+                LocalDateTime.now().plusWeeks(1).plusMinutes(1).withSecond(0).withNano(0),
                 "95-100",
                 "Lodz"+ new Random().nextInt((100-0)+1)+1,
                 "Fabryczna 17",
@@ -51,7 +51,7 @@ public class SessionBuilder {
 
         Config selectedSession = configList.get(session-1);
         if(ManagementMethod.valueOf(selectedSession.getString("managementMethod")).equals(SESSION)) {
-            return withSessionDate(LocalDateTime.now().plusWeeks(selectedSession.getInt("sessionDate"))).
+            return withSessionDate(LocalDateTime.now().plusWeeks(selectedSession.getInt("sessionDate")).withSecond(0).withNano(0)).
                     withPostalCode(selectedSession.getString("postalCode")).
                     withCity(selectedSession.getString("city")).
                     withAddress(selectedSession.getString("address")).
@@ -62,7 +62,7 @@ public class SessionBuilder {
                     withProducts(createProductList(selectedSession.getStringList("products"))).
                     withExaminer(selectedSession.getString("examiner"));
         }
-        return withSessionDate(LocalDateTime.now().plusWeeks(selectedSession.getInt("sessionDate"))).
+        return withSessionDate(LocalDateTime.now().plusWeeks(selectedSession.getInt("sessionDate")).withSecond(0).withNano(0)).
                 withPostalCode(selectedSession.getString("postalCode")).
                 withCity(selectedSession.getString("city")).
                 withAddress(selectedSession.getString("address")).
