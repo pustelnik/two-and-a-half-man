@@ -48,14 +48,11 @@ public class EnrollFieldValidation {
 
     @Before
     public void createSession(){
-
         credentialsHolder = examEnrollValidationSteps.loginUsingRequest(driver);
-        addSessionSteps.setOneExamSession();
-        addSessionSteps.shouldCreateSession();
-        addSessionSteps.shouldActivateExamSession();
-        sessionExamsPage.openSessionExamsPage(addSessionSteps.getSession().getId().get());
-        examEnrollValidationSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
+        addSessionSteps.createActiveSession();
+        addSessionSteps.getExamSessionPageId();
 
+        examEnrollValidationSteps.goToIndividualEnrollpage(addSessionSteps.getExamSessionPageId());
     }
 
     @Test

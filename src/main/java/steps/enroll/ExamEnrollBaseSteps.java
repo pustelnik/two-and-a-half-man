@@ -35,7 +35,7 @@ public class ExamEnrollBaseSteps extends BaseScenarioSteps {
     public void goToIndividualEnrollpage(String individualSessionId){
         LandingPage landingPage = getCurrentPage((LandingPage.class));
         landingPage.goToLandingPage();
-        landingPage.getElementByID(individualSessionId).click();
+        landingPage.getIndividualRegisterButtonById(individualSessionId).click();
     }
 
     public ExamEnrollPageStep1 getExamEnrollPageStep1() {
