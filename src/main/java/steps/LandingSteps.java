@@ -1,9 +1,9 @@
 package steps;
 
+import model.EnrollEnums;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import org.openqa.selenium.WebElement;
-import pages.AddSessionPage;
 import pages.LandingPage;
 import model.Session;
 import model.EnrollEnums.EGZAM_PRODUCT;
@@ -41,11 +41,26 @@ public class LandingSteps extends BaseScenarioSteps{
      */
     @Step
     public String clickRegisterIndividualByID(String examId){
-        WebElement registerIndividualBtn = landingPage.getElementByID(examId);
+        WebElement registerIndividualBtn = landingPage.getIndividualRegisterButtonById(examId);
 
         registerIndividualBtn.click();
 
         return examId;
+    }
+
+
+    /**
+     * Assert that given session is correctly showed on Landing page.
+     * Check if Group and Individual registration buttons are present.
+     * @param session - session data to check
+     */
+    @Step
+    public void assertSessionIsCorrectlyShowed(Session session){
+        assertTrue("Landing page : 'Rejestracja grupowa' for session is not available", isGroupRegistrationAvailable(session));
+        for(EnrollEnums.EGZAM_PRODUCT product : session.getProducts()) {
+            assertTrue("Landing page : 'Rejestracja indywidualna' for product "+product.name()+" is not available.",isIndividualRegistrationAvailable(session, product));
+        }
+        //TODO spawdzenie wolnych miejsc
     }
 
     /**
@@ -55,7 +70,7 @@ public class LandingSteps extends BaseScenarioSteps{
      */
     @Step
     public Session clickRegisterGroup(Session session) {
-        assertTrue("Landing page : Registration not available.",isRegistrationAvailable(session));
+        assertTrue("Landing page : Registration not available.", isGroupRegistrationAvailable(session));
         WebElement examSessionContainer = landingPage.getExamSession(session);
         WebElement registerGroupBtn = landingPage.getGroupRegisterButton(examSessionContainer);
 
@@ -72,7 +87,7 @@ public class LandingSteps extends BaseScenarioSteps{
      * @return given session
      */
     @Step
-    public Session assureSummaryNumberOfFreeSeatsEqualTo(Session session, int freeSeats){
+    public Session assertSummaryNumberOfFreeSeatsEqualTo(Session session, int freeSeats){
         //jezeli sesja jest tworzona z miejscami dla produktu
         return session;
     }
@@ -84,7 +99,7 @@ public class LandingSteps extends BaseScenarioSteps{
      */
     @Step
     public Session assertSummaryNumberOfFreeSeatsIsEqualSeatsCount(Session session){
-        assertTrue("Landing page : Summary value of free seats and count of individual seats are different.",landingPage.getCountOfFreeSeats(session) == landingPage.getSummaryFreeSeats(session));
+        assertTrue("Landing page : Summary value of free seats and count of individual seats are different.",landingPage.getCountOfFreeSeats(session) == landingPage.getGroupRegisterFreeSeats(session));
         return session;
     }
 
@@ -96,9 +111,10 @@ public class LandingSteps extends BaseScenarioSteps{
      * @return given session
      */
     @Step
-    public Session assureNumberOfFreeSeatsForProduct(Session session, int freeSeats){
+    public Session assertNumberOfFreeSeatsForProduct(Session session, int freeSeats){
         return session;
     }
+
 
 
     /**
@@ -106,9 +122,18 @@ public class LandingSteps extends BaseScenarioSteps{
      * @param session - session to check
      * @return true if registration is available
      */
-    @Step
-    public boolean isRegistrationAvailable(Session session){
-        WebElement examSessionContainer = landingPage.getExamSession(session);
-        return landingPage.isGroupRegistrationButtonAvailable(examSessionContainer);
+    private boolean isGroupRegistrationAvailable(Session session){
+        return landingPage.isGroupRegistrationButtonAvailable(session);
+    }
+
+
+
+    /**
+     * Check if given session is shown on page, and that individual register button is available for given product.
+     * @param session - session to check
+     * @return true if registration is available
+     */
+    private boolean isIndividualRegistrationAvailable(Session session, EGZAM_PRODUCT product){
+        return landingPage.isIndividualRegistrationButtonAvailable(session, product);
     }
 }

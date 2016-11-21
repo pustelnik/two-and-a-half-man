@@ -1,17 +1,9 @@
 package steps.enroll;
 
 import com.typesafe.config.ConfigFactory;
-import model.AtendeeModel;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import pages.*;
-import pages.enroll.*;
-import steps.BaseScenarioSteps;
-import model.Session;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -27,7 +19,7 @@ public class ExamEnrollSteps extends ExamEnrollBaseSteps {
     public void goToIndividualEnrollpage(String individualSessionId){
         LandingPage landingPage = getCurrentPage((LandingPage.class));
         landingPage.goToLandingPage();
-        landingPage.getElementByID(individualSessionId).click();
+        landingPage.getIndividualRegisterButtonById(individualSessionId).click();
     }
 
     @Step
