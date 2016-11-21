@@ -57,6 +57,7 @@ public class ExamEnrollSteps extends ExamEnrollBaseSteps {
 
     @Step
     public void deleteAllEnrollments(){
+        applicationsPage.goToEnrollmentsPage();
         applicationsPage.deleteAllApplications();
     }
     

@@ -32,8 +32,6 @@ public class UserEnrollIndividually {
     @Steps
     AddSessionSteps addSessionSteps;
 
-    @Page
-    SessionExamsPage sessionExamsPage;
 
     private RequestBase credentialsHolder;
     private int enrollmentID;
@@ -42,7 +40,7 @@ public class UserEnrollIndividually {
     public void prepareEgzamSession(){
         credentialsHolder = examEnrollSteps.loginUsingRequest(driver);
         addSessionSteps.createActiveSession();
-        examEnrollSteps.goToIndividualEnrollpage(sessionExamsPage.getExamToSession(addSessionSteps.getSession().getProducts().get(0)));
+        examEnrollSteps.goToIndividualEnrollpage(addSessionSteps.getExamSessionPageId());
         examEnrollSteps.logout(driver);
     }
 
@@ -103,15 +101,9 @@ public class UserEnrollIndividually {
         //finally verify that the counter shows 0 free seats
     }
 
-    @Test
-    @Title("Try to enroll on an egzam session while not being logged in")
-    @Pending
-    public void enrollAsSomeoneWhenRegistered(){
-
-    }
-
     @After
-    public void removeEgzamSession(){
+    public void removeExamSession(){
+        examEnrollSteps.loginUsingRequest(driver);
         examEnrollSteps.deleteAllEnrollments();
         examEnrollSteps.clearAtendeeModel();
     }

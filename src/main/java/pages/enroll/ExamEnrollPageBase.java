@@ -34,7 +34,6 @@ public class ExamEnrollPageBase extends BasePage {
 
     public boolean checkIfExamHeaderContainsGivenDetails(String headerText){
         try{
-            System.out.println(headerText);
             WebElement headerElement = find(By.xpath("//div[@class=\"Register-header2\"]//span[contains(text(),\""+headerText+"\")]"));
             return headerElement.isDisplayed();
         }

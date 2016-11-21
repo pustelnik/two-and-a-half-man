@@ -105,7 +105,14 @@ public class LandingPage extends BasePage{
         }
     }
 
-
+    public WebElement getGroupRegisterButtonById(String examId){
+        try {
+            return getDriver().findElement(By.cssSelector("td[data-session='" + examId + "']"));
+        }catch(NoSuchElementException e){
+            assertNotNull("Landing page : Couldn't find 'Rejestracja grupowa' button for created exam on exam list",null);
+            return null;
+        }
+    }
 
     public boolean isGroupRegistrationButtonAvailable(Session session){
         try {
