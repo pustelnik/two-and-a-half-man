@@ -257,7 +257,6 @@ public class CreateSession {
         steps.shouldCreateSession();
     }
 
-    //1.utworzenie sesji bez aktywacji - sprawdzic czy nie ma jej na agendzie
     @Test
     public void createSessionWithoutActivationAndCheckShouldBeMissingInAgenda(){
         Session session = SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build();
@@ -271,7 +270,6 @@ public class CreateSession {
         }
     }
 
-    //2. utworzenie sesji i aktywacja, sprawdzic czy jest w agendzie
     @Test
     public void createSessionWithActivationAndCheckIsShownOnAgenda(){
         Session session = SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build();
@@ -283,7 +281,7 @@ public class CreateSession {
             steps.sessionDeleteRequest(session.getId().get());
         }
     }
-    //3. utworzenie sesji na zero miejsc i aktyawcja
+
     @Test
     public void createSessionWithZeroSeatsShouldBeUnavailableToRegister(){
         Session session = SessionBuilder.Instance().loadSessionFromConfig(1).withNumberOfSeats("0").withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build();
