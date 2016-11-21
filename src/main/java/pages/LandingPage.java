@@ -141,7 +141,7 @@ public class LandingPage extends BasePage{
         return null;
     }
 
-    private boolean isExamSessionOnAgenda(Session session){
+    public boolean isExamSessionOnAgenda(Session session){
         if(isExamDayContainerOnAgenda(session)) {
             List<WebElement> agendaSessions = getExamDayContainer(session).findElements(By.cssSelector(".Agenda-dateContentContainer.row"));
             for (WebElement element : agendaSessions) {
