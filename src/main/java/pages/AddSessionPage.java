@@ -206,7 +206,7 @@ public class AddSessionPage extends NavigationBar {
     }
 
     private void clickOnProductDropDown(EGZAM_PRODUCT product) {
-        List<WebElementFacade> elements = findAll(By.cssSelector(".Session-selectBox li[data-original-index]"));
+        List<WebElementFacade> elements = findAll(By.cssSelector("a[class^=\"opt  optionGroup\"]>span[class=\"text\"]"));
         for (WebElementFacade webElementFacade : elements) {
             if(webElementFacade.getTextValue().startsWith(product.name)) {
                 webElementFacade.click();
