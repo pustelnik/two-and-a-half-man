@@ -203,7 +203,6 @@ public class CreateSession {
                 SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).plusMinutes(10).withNano(0).withSecond(0)).build()
         };
 
-        loginSteps.shouldLogin();
         for(Session session : sessions){
             steps.shouldCreateSession(session);
             steps.sessionShouldBeCreated();
@@ -228,7 +227,6 @@ public class CreateSession {
                 SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).plusDays(1).withNano(0).withSecond(0)).build()
         };
 
-        loginSteps.shouldLogin();
         for(Session session : sessions){
             steps.shouldCreateSession(session);
             steps.sessionShouldBeCreated();
