@@ -64,6 +64,25 @@ public class LandingSteps extends BaseScenarioSteps{
     }
 
     /**
+     * Check if given session is showed on Agenda(Landing) page.
+     * Verify by checking existence of session container and register buttons.
+     * @param session - session to check
+     * @return true if session is available in agenda
+     */
+    @Step
+    public boolean isSessionAvailableOnAgenda(Session session){
+        if(!isGroupRegistrationAvailable(session)){
+            return false;
+        }
+        for(EnrollEnums.EGZAM_PRODUCT product : session.getProducts()) {
+            if(!isIndividualRegistrationAvailable(session, product)){
+                return false;
+            }
+        }
+    return true;
+    }
+
+    /**
      * Click on register group button of given session.
      * @param session session for which register button should be found
      * @return given session

@@ -109,8 +109,10 @@ public class LandingPage extends BasePage{
 
     public boolean isGroupRegistrationButtonAvailable(Session session){
         try {
-            if(null==getExamSession(session).findElement(By.cssSelector(".Agenda-groupBtnContainer.btn")).getAttribute("disabled")){
-                return true;
+            if(isExamSessionOnAgenda(session)) {
+                if (null == getExamSession(session).findElement(By.cssSelector(".Agenda-groupBtnContainer.btn")).getAttribute("disabled")) {
+                    return true;
+                }
             }
         }catch(NoSuchElementException e){
             assertNotNull("Landing page : Couldn't find 'Rejestracja grupowa' button for created exam on exam list",null);
@@ -139,6 +141,18 @@ public class LandingPage extends BasePage{
         return null;
     }
 
+    private boolean isExamSessionOnAgenda(Session session){
+        if(isExamDayContainerOnAgenda(session)) {
+            List<WebElement> agendaSessions = getExamDayContainer(session).findElements(By.cssSelector(".Agenda-dateContentContainer.row"));
+            for (WebElement element : agendaSessions) {
+                if (extractAgendaHour(element).equals(session.getSessionDate().toLocalTime())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
 
     public int getGroupRegisterFreeSeats(Session session){
         WebElement examsContainer = getExamSession(session);
@@ -188,6 +202,15 @@ public class LandingPage extends BasePage{
         return null;
     }
 
+    private boolean isExamDayContainerOnAgenda(Session session){
+        List<WebElement> examsDaysFound = getListOfDaysWithExams();
+        for (WebElement element : examsDaysFound) {
+            if( isAgendaWithDayAndPlaceOfExam(element, session.getCity(), session.getSessionDate().toLocalDate()) ){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 
@@ -231,7 +254,7 @@ public class LandingPage extends BasePage{
                 return false;
             }
         }catch(NoSuchElementException e){
-            assertNotNull("Landing page : No exam agenda found on page.", null);
+            return false;
         }
         return true;
     }
