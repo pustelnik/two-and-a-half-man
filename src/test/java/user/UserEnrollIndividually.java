@@ -77,30 +77,6 @@ public class UserEnrollIndividually {
         examEnrollSteps.fillFieldsFromStep2AndCheckForDuplicateEmailMessage();
     }
 
-    @Test
-    @Title("Try to enroll while there is only 1 seat available - Precondition - create session with one free seat")
-    @Pending
-    public void enrollAsLastUser(){
-
-    }
-
-    @Test
-    @Title("Try to enroll while there are no more seats available - Precondition - create session with no free seat.")
-    @Pending
-    public void tryToEnrollWhenThereIsNoMoreSeats(){
-
-    }
-
-    @Test
-    @Title("Check if free seat counter is working correctly - Precondition create session with X free seats")
-    @Pending
-    public void checkIfFreeSeatCounterIsWorking(){
-        //getNumber of free seats
-        //create for loop and enroll user in each step - check if counter is being decremented correctly
-
-        //finally verify that the counter shows 0 free seats
-    }
-
     @After
     public void removeExamSession(){
         examEnrollSteps.loginUsingRequest(driver);

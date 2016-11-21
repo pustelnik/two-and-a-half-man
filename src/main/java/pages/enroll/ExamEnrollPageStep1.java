@@ -1,6 +1,7 @@
 package pages.enroll;
 
 import model.EnrollEnums;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,16 +11,16 @@ import org.openqa.selenium.support.FindBy;
  */
 public class ExamEnrollPageStep1 extends ExamEnrollPageBase {
     ///STEP 1
-    @FindBy(xpath = "//div[@class='radio']/input[@id='ProductSelectionDto_ProductLanguage25']")
+    @FindBy(xpath = "//div[@class='radio']/input[@value='43']")
     private WebElement polishLanguage;
-    @FindBy(xpath = "//div[@class='radio']/input[@id='ProductSelectionDto_ProductLanguage26']")
+    @FindBy(xpath = "//div[@class='radio']/input[@value='44']")
     private WebElement englishLanguage;
     @FindBy(css = "span[for='ProductSelectionDto.ProductLanguage']")
     private WebElement languageValidateion;
 
-    @FindBy(xpath = "//div[@class='radio']/input[@id='ProductSelectionDto_ProductForm_papierowa']")
+    @FindBy(xpath = "//div[@class='radio']/input[@value='Paper']")
     private WebElement egzamTypePaper;
-    @FindBy(xpath = "//div[@class='radio']/input[@id='ProductSelectionDto_ProductForm_elektroniczna']")
+    @FindBy(xpath = "//div[@class='radio']/input[@value='Electronic']")
     private WebElement egzamTypeElectronic;
     @FindBy(css = "span[for='ProductSelectionDto.ProductForm']")
     private WebElement egzamTypeValidation;
@@ -94,7 +95,12 @@ public class ExamEnrollPageStep1 extends ExamEnrollPageBase {
     }
 
     public boolean isOwnedCertificateRequired(){
-        return ownedCertificateNumber.isDisplayed();
+        try{
+            return (ownedCertificateNumber != null && ownedCertificateNumber.isDisplayed());
+        }catch(NoSuchElementException nsee){
+
+        }
+        return false;
     }
 
     public void goToStep2() {

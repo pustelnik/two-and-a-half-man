@@ -74,7 +74,12 @@ public class ExamEnrollGroupPageStep1 extends ExamEnrollGroupPageBase{
     }
 
     public boolean isOwnedCertificateRequired(){
-        return ownedCertificateNumber.isDisplayed();
+        try{
+            return (ownedCertificateNumber != null && ownedCertificateNumber.isDisplayed());
+        }catch(NoSuchElementException nsee){
+
+        }
+        return false;
     }
 
     public void goToStep2() {
