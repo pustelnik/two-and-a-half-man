@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import steps.LandingSteps;
 import steps.LoginSteps;
 import steps.session.AddSessionSteps;
 
@@ -32,6 +33,9 @@ public class CreateSession {
 
     @Steps
     private LoginSteps loginSteps;
+
+    @Steps
+    private LandingSteps landingSteps;
 
     @Steps
     private AddSessionSteps steps;
@@ -185,6 +189,57 @@ public class CreateSession {
         steps.shouldCreateSession();
         steps.shouldNotCreateNewSession();
     }
+
+    @Test
+    @Title("Same exams created in the same day should be show under proper time section in agenda")
+    public void sameExamsInTheSameDayShouldBeCorrectlyShowOnAgenda(){
+        Session[] sessions = {
+                SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build(),
+                SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).plusMinutes(10).withNano(0).withSecond(0)).build()
+        };
+
+        loginSteps.shouldLogin();
+        for(Session session : sessions){
+            steps.shouldCreateSession(session);
+            steps.sessionShouldBeCreated();
+            steps.shouldActivateExamSession();
+        }
+
+        landingSteps.goToLandingPage();
+        for(Session session : sessions){
+            landingSteps.assertSessionIsCorrectlyShowed(session);
+        }
+
+        for(Session session : sessions){
+            steps.sessionDeleteRequest(session.getId().get());
+        }
+    }
+
+    @Test
+    @Title("Same exams created day after day should be show under proper date and time section in agenda")
+    public void sameExamDayAfterDayShouldBeCorrectlyShowOnAgenda(){
+        Session[] sessions = {
+                SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).withNano(0).withSecond(0)).build(),
+                SessionBuilder.Instance().loadSessionFromConfig(1).withSessionDate(LocalDateTime.now().plusMonths(1).plusDays(1).withNano(0).withSecond(0)).build()
+        };
+
+        loginSteps.shouldLogin();
+        for(Session session : sessions){
+            steps.shouldCreateSession(session);
+            steps.sessionShouldBeCreated();
+            steps.shouldActivateExamSession();
+        }
+
+        landingSteps.goToLandingPage();
+        for(Session session : sessions){
+            landingSteps.assertSessionIsCorrectlyShowed(session);
+        }
+
+        for(Session session : sessions){
+            steps.sessionDeleteRequest(session.getId().get());
+        }
+    }
+
 
     @After
     public void cleanUpSession() {

@@ -166,6 +166,15 @@ public class AddSessionSteps extends BaseScenarioSteps {
     }
 
     @Step
+    @Title("Delete session with given ID, using delete request.")
+    public void sessionDeleteRequest(int sessionId){
+        RequestBase requestBase = loginUsingRequest(getDriver());
+        SessionRequest sessionRequest = new SessionRequest(requestBase.getCookieStore());
+        LOGGER.debug("Sending DELETE session " + sessionId);
+        sessionRequest.deleteSession(sessionId);
+    }
+
+    @Step
     public void shouldActivateExamSession() {
         sessionDetailsPage.changeSessionState(ACTIVATE_SESSION, true);
     }
