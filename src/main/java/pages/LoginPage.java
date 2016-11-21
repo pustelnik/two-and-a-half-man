@@ -25,7 +25,7 @@ public class LoginPage extends BasePage {
     private WebElementFacade rememberMe;
     @FindBy(css = ".btn.btn-light.btn-form.u-float-Left>a")
     private WebElement forgotPassBtn;
-    @FindBy(css = ".btn.btn-dark.btn-form.u-floatRight")
+    @FindBy(css = ".btn.btn-dark.btn-form")
     private WebElement loginBtn;
 
     public LoginPage(WebDriver driver) {
